@@ -1,11 +1,27 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 @Component({
   selector: 'app-welcome',
-  imports: [],
   templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
+  styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent {
+export class WelcomeComponent implements AfterViewInit {
 
+  ngAfterViewInit(): void {
+    const exploreButton = document.querySelector('.button[href="#"]');
+
+    if (exploreButton) {
+      exploreButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const nextSection = document.querySelector('.features');
+        if (nextSection) {
+          window.scrollTo({
+            top: nextSection.getBoundingClientRect().top + window.scrollY - 50,
+            behavior: 'smooth'
+          });
+        }
+      });
+    }
+  }
 }
