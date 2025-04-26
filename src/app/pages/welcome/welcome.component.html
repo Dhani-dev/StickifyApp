@@ -5,8 +5,8 @@
         </div>
         <nav class="top-right-buttons">
             <a href="#" class="button">Explorar</a>
-            <a href="logIn.html" class="button">Iniciar Sesión</a>
-            <a href="signIn.html" class="button primary">Regístrate</a>
+            <a [routerLink]="['/log-in']" class="button">Iniciar Sesión</a>
+            <a [routerLink]="['/sign-in']" class="button primary">Regístrate</a>
         </nav>
     </header>
     <main class="hero">
@@ -14,7 +14,7 @@
             <h1>Califica y Descubre Nueva Música</h1>
             <p>Comparte tus opiniones sobre tus canciones favoritas y descubre nuevas melodías. ¡Únete a la comunidad de
                 Stickify!</p>
-            <a href="logIn.html" class="button primary large">¡Comienza a Calificar!</a>
+            <a [routerLink]="['/log-in']" class="button primary large">¡Comienza a Calificar!</a>
         </div>
         <div class="hero-image">
             <img src="imageBanner.jpg" alt="Música en Stickify">

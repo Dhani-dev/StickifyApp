@@ -1,1 +1,13 @@
-<p>log-in works!</p>
+<body>
+    <div class="login-container">
+        <h1>Iniciar Sesión en Stickify</h1>
+        <form class="login-form" id="logInForm">
+            <input type="email" placeholder="Correo Electrónico" required>
+            <input type="password" placeholder="Contraseña" required>
+            <button type="submit" class="button primary">Iniciar Sesión</button>
+        </form>
+        <p>¿No tienes una cuenta? <a [routerLink]="['/sign-in']">Regístrate</a></p>
+        <a [routerLink]="['/']" class="button secondary">Volver</a>
+
+    </div>
+</body>

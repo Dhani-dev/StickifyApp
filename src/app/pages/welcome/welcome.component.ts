@@ -1,7 +1,10 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
+  imports: [RouterLink],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
