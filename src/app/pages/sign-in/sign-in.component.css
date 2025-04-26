@@ -80,9 +80,3 @@ body {
     color: var(--hologram);
 }
 
-.input-error {
-    border: 2px solid red;
-    /* Agrega el borde rojo para resaltar el error */
-    background-color: #ffe6e6;
-    /* Fondo ligeramente rosado para resaltar el error */
-}
