@@ -49,4 +49,47 @@ export class AuthService {
   private isUserLogged(): boolean {
     return !!sessionStorage.getItem('userLogged');
   }
+
+  login(email: string, password: string): User | null {
+    const users: User[] = [];
+  
+    // Buscar todos los usuarios guardados en localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key) continue;
+  
+      const item = localStorage.getItem(key);
+      if (!item) continue;
+  
+      try {
+        const user: User = JSON.parse(item);
+        if (user && user.email === email) {
+          if (user.password === password) {
+            return user;
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: "Contraseña incorrecta",
+              icon: "error",
+              color: "#716add",
+              backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+            });
+            return null;
+          }
+        }
+      } catch (error) {
+        console.error('Error leyendo usuario:', error);
+      }
+    }
+  
+    Swal.fire({
+      title: "Error",
+      text: "Usuario no encontrado",
+      icon: "error",
+      color: "#716add",
+      backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+    });
+  
+    return null;
+  }  
 }
