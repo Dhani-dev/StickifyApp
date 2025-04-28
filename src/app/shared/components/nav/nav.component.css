@@ -87,23 +87,23 @@ nav .nav-shortcuts {
     left: 110%;
 }
 
-.nav-shortcuts a[href="home.html"]::after {
+.nav-shortcuts a.link-home::after {
     content: "Home";
 }
 
-.nav-shortcuts a[href="profile.html"]::after {
+.nav-shortcuts a.link-profile::after {
     content: "Profile";
 }
 
-.nav-shortcuts a[href="playlist.html"]::after {
+.nav-shortcuts a.link-playlist::after {
     content: "Playlists";
 }
 
-.nav-shortcuts a[href="songs.html"]::after {
+.nav-shortcuts a.link-songs::after {
     content: "Songs";
 }
 
-.nav-shortcuts a[href="authors.html"]::after {
+.nav-shortcuts a.link-authors::after {
     content: "Authors";
 }
 

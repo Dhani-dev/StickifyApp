@@ -21,7 +21,7 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     align-items: center;
     border: none;
-    font-size: 1.0rem;
+    font-size: 0.9rem;
 }
 
 #genreToggle:hover,
