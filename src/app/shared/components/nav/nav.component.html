@@ -1,0 +1,29 @@
+<nav>
+    <div class="nav-shortcuts">
+        <a [routerLink]="['/home']"><i class="fa-solid fa-home"></i></a>
+        <a [routerLink]="['/profile']"><i class="fa-solid fa-gear"></i></a>
+        <a [routerLink]="['/playlist']"><i class="fa-solid fa-list-check"></i></a>
+        <a [routerLink]="['/songs']"><i class="fa-solid fa-music"></i></a>
+        <a [routerLink]="['/authors']"><i class="fa-solid fa-user-group"></i></a>
+        <a id="logoutBtn" [routerLink]="['/']"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </div>
+    <div class="filter" id="allFiltersContainer">
+        <button id="genreToggle">Filtrar por géneros</button>
+        <div id="genreFilters">
+            <span class="close-filter" data-filter="genreFilters">&times;</span>
+            <div class="checkbox-container"></div>
+        </div>
+
+        <button id="dateToggle">Filtrar por fecha</button>
+        <div id="dateFilters">
+            <span class="close-filter" data-filter="dateFilters">&times;</span>
+            <input type="text" id="dateInput" placeholder="YYYY">
+        </div>
+
+        <button id="artistToggle">Filtrar por artista</button>
+        <div id="artistFilters">
+            <span class="close-filter" data-filter="artistFilters">&times;</span>
+            <div class="artist-checkbox-container"></div>
+        </div>
+    </div>
+</nav>

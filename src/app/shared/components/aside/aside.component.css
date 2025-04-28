@@ -1,0 +1,36 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "nav header header"
+        "nav main aside";
+    height: 100vh;
+}
+
+aside {
+    background: linear-gradient(270deg,
+            var(--void) 0%,
+            var(--deep-space) 100%);
+    border-left: 3px solid var(--galaxy-core);
+    grid-area: aside;
+    padding: 2rem;
+}
+
+aside {
+    position: sticky;
+    border-left: 2px solid var(--galaxy-core);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 10px 0 10px 0 rgba(90, 24, 154, 0.4);
+    width: 280px;
+}
+
+aside h2 {
+    color: var(--hologram);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    text-shadow: var(--text-glow);
+    text-align: center;
+}

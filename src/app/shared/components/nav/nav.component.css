@@ -1,0 +1,143 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "nav header header"
+        "nav main aside";
+    height: 100vh;
+}
+
+nav {
+    grid-area: nav;
+    background: var(--void);
+    border-right: 3px solid var(--galaxy-core);
+    box-shadow: 4px 0 15px rgba(16, 0, 43, 0.8);
+    display: flex;
+    position: fixed;
+    padding: 0.5rem;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    flex: 1;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 15%;
+
+}
+
+nav .nav-shortcuts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    gap: 1.5rem;
+    padding: 2rem;
+    padding-right: 2.5rem;
+
+}
+
+.nav-shortcuts i {
+    font-size: 2.2rem;
+    transition: transform 0.3s ease;
+    color: var(--cyber-lavender);
+    cursor: pointer;
+}
+
+.nav-shortcuts i:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(3px -3px 0px var(--hologram));
+    color: #69247C;
+    cursor: pointer;
+}
+
+.nav-shortcuts a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.nav-shortcuts a::after {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--void);
+    color: var(--hologram);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    border: 1px solid var(--cyber-lavender);
+    box-shadow: 3px 3px 10px rgba(16, 0, 43, 0.5);
+    z-index: 1000;
+}
+
+.nav-shortcuts a::before {
+    position: absolute;
+    left: 95%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent var(--void);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.nav-shortcuts a:hover::after,
+.nav-shortcuts a:hover::before {
+    opacity: 1;
+    left: 110%;
+}
+
+.nav-shortcuts a[href="home.html"]::after {
+    content: "Home";
+}
+
+.nav-shortcuts a[href="profile.html"]::after {
+    content: "Profile";
+}
+
+.nav-shortcuts a[href="playlist.html"]::after {
+    content: "Playlists";
+}
+
+.nav-shortcuts a[href="songs.html"]::after {
+    content: "Songs";
+}
+
+.nav-shortcuts a[href="authors.html"]::after {
+    content: "Authors";
+}
+
+.nav-shortcuts a#logoutBtn::after {
+    content: "Logout";
+}
+
+nav .filter {
+    padding-left: 5px;
+    border-left: 1px solid var(--cyber-lavender);
+    color: var(--hologram);
+    width: 60%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(90, 24, 154, 0.3);
+    backdrop-filter: blur(6px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 1rem auto;
+    border-radius: 0.5rem;
+}
+
+nav .filter:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px var(--quantum-glow);
+}

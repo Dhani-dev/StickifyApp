@@ -1,1 +1,31 @@
-<p>home works!</p>
+<div class="container">
+    <app-nav></app-nav>
+    <app-header></app-header>
+  
+    <main>
+      <div id="pagination">
+          <!-- Aquí se mostrarán los botones de paginación -->
+      </div>
+      <div id="musicResults"></div>
+    </main>
+  
+    <app-aside></app-aside>
+  
+
+    <!-- Modal -->
+    <div id="songModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalSongDetails"></div>
+            <div class="rating-comments-section">
+                <h3>Valoraciones y Comentarios</h3>
+                <div id="modalRatings"></div>
+                <div id="modalComments"></div>
+                <div class="comment-input">
+                    <input type="text" id="newComment" placeholder="Escribe tu comentario...">
+                    <button id="submitComment">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
