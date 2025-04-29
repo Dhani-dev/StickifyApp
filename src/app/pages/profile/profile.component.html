@@ -1,1 +1,26 @@
-<p>profile works!</p>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><i class="fa-solid fa-user-shield"></i> Mi Perfil</h1>
+            <div class="security-badge">
+                <i class="fa-solid fa-lock"></i>
+                <span>Cuenta verificada</span>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="user-data" id="userData">
+                <!-- Datos dinámicos desde TS -->
+            </div>
+
+            <div class="profile-actions">
+                <a [routerLink]="['/home']" class="btn home-btn">
+                    <i class="fa-solid fa-house"></i> Volver al Inicio
+                </a>
+                <button id="logoutBtn" [routerLink]="['/']" class="btn logout-btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+</body>

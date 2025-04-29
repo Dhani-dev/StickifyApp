@@ -57,7 +57,7 @@
     display: block;
 }
 
-.checkbox-containe0r,
+.checkbox-container,
 .artist-checkbox-container {
     display: flex;
     flex-direction: column;

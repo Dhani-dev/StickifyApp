@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common'; // Para *ngIf
+import { FilterComponent } from '../filter/filter.component';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLink],
+  standalone: true,
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css', './genre-Filter.component.css']
+  styleUrls: ['./nav.component.css'],
+  imports: [RouterModule, CommonModule, FilterComponent]
 })
 export class NavComponent {
+  isHomePage = false; // Saber si se debe mostrar el filtro
 
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.isHomePage = event.urlAfterRedirects === '/home';
+      }
+    });
+  }
 }
