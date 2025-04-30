@@ -87,7 +87,6 @@ nav .nav-shortcuts {
     left: 110%;
 }
 
-
 .nav-shortcuts a.link-home::after {
     content: "Home";
 }

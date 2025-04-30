@@ -9,7 +9,6 @@ import { PlaylistComponent } from './pages/playlist/playlist.component';
 import { SongsComponent } from './pages/songs/songs.component';
 import { AuthorsComponent } from './pages/authors/authors.component';
 
-
 export const routes: Routes = [
     {
         path: '',

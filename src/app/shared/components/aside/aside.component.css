@@ -15,6 +15,7 @@ aside {
     border-radius: 12px;
     box-shadow: 10px 0 10px 0 rgba(90, 24, 154, 0.4);
     width: 280px;
+    margin-right: -5px;
 }
 
 aside h2 {
