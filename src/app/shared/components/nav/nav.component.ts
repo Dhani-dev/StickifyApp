@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { Router, RouterLink, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FilterComponent } from '../filter/filter.component';
 import { CommonModule } from '@angular/common'; 
-
 
 @Component({
   selector: 'app-nav',
@@ -13,7 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './nav.component.css'
 })
 export class NavComponent {
-  isHomePage = false;
+  @Output() filterChanged = new EventEmitter<any>();
+  isHomePage: boolean = false;
   public authService: AuthService;
   private router: Router;
 
@@ -26,6 +26,10 @@ export class NavComponent {
         this.isHomePage = event.urlAfterRedirects === '/home';
       }
     });
+  }
+
+  onFilterChange(filters: any) {
+    this.filterChanged.emit(filters);
   }
 
   logout(): void {

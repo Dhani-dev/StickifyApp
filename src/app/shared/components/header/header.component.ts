@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  @Output() searchInputChanged = new EventEmitter<string>();
 
+  onInputChange(event: Event) {
+    const searchTerm = (event.target as HTMLInputElement).value;
+    this.searchInputChanged.emit(searchTerm);
+  }
 }

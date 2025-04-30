@@ -7,5 +7,6 @@ export interface Song {
     artworkUrl100: string;
     releaseDate: string;
     isUserUpload: boolean;
-}
- 
+    collectionId: number;
+    artistId: number;
+  }

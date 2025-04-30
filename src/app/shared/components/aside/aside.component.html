@@ -1,4 +1,17 @@
 <aside>
     <h2>Canciones mejor calificadas</h2>
-    <ol id="topRatedList"></ol>
-</aside>
+    <ol id="topRatedList">
+      <li *ngFor="let ratedSong of topRatedSongs">
+        <img [src]="ratedSong.song.artworkUrl100" [alt]="ratedSong.song.trackName">
+        <div>
+          <span class="artist-track">{{ ratedSong.song.artistName }} - {{ ratedSong.song.trackName }}</span>
+          <span class="rating" *ngIf="ratedSong.averageRating > 0">
+            <span *ngFor="let star of getStarArray(ratedSong.averageRating)">{{ star }}</span>
+          </span>
+          <span class="rating" *ngIf="!(ratedSong.averageRating > 0)">
+            Sin calificaciones
+          </span>
+        </div>
+      </li>
+    </ol>
+  </aside>

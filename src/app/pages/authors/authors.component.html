@@ -2,7 +2,12 @@
   <app-nav></app-nav>
 
   <main>
-      <div id="authorResults">
+    <div class="author-results">
+      <div *ngFor="let author of authors" class="author-item">
+        <div class="author-info">
+          <h3>{{ author }}</h3>
+        </div>
       </div>
+    </div>
   </main>
 </div>

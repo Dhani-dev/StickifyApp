@@ -8,6 +8,6 @@
         <a (click)="logout()" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
     </div>
 
-    <app-filter *ngIf="isHomePage"></app-filter>
+    <app-filter *ngIf="isHomePage" (filterChanged)="onFilterChange($event)"></app-filter>
 
 </nav>
