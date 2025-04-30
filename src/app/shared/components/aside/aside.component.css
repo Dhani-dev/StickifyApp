@@ -24,3 +24,11 @@ aside h2 {
     text-shadow: var(--text-glow);
     text-align: center;
 }
+
+@media (max-width: 1024px) {
+  
+    aside {
+      display: none;
+    }
+}
+  

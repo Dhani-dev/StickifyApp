@@ -1,95 +1,110 @@
-import { Injectable, signal } from '@angular/core';
-import { User } from '../shared/interfaces/user.interface';
-import Swal from 'sweetalert2';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+interface User {
+  username?: string;
+  email: string;
+  password?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly USERS_KEY = 'users';
+  private readonly CURRENT_USER_KEY = 'currentUser';
 
-  isSignedUser = signal(this.isUserLogged());
+  constructor(private router: Router) {
+    this.currentUser = localStorage.getItem('currentUser') 
+      ? JSON.parse(localStorage.getItem('currentUser')!) 
+      : null;
+   }
 
-  constructor() { }
+  get users(): User[] {
+    const usersString = localStorage.getItem(this.USERS_KEY);
+    return usersString ? JSON.parse(usersString) : [];
+  }
 
-  registry(user: User): boolean {
-    // Verificar si ya existe un usuario con el mismo username
-    if (localStorage.getItem(user.username)) {
-      Swal.fire(
-        {
-          title: "Error",
-          text: "Este nombre de usuario ya está registrado",
-          color: "#716add",
-          backdrop: `
-          rgba(0,0,123,0.4)
-          left top
-          no-repeat
-        `,
-          icon: "error"
-        });
+  set users(users: User[]) {
+    localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
+  }
+
+  get currentUser(): User | null {
+    const currentUserString = localStorage.getItem(this.CURRENT_USER_KEY);
+    return currentUserString ? JSON.parse(currentUserString) : null;
+  }
+
+  set currentUser(user: User | null) {
+    if (user) {
+      localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+    } else {
+      localStorage.removeItem(this.CURRENT_USER_KEY);
+    }
+  }
+
+  signUp(userData: User): boolean {
+    const { username, email, password } = userData;
+    if (!username || !email || !password) {
+      console.warn('Validación fallida: Campos vacíos');
+      alert('Por favor, complete todos los campos');
       return false;
     }
 
-    // Guardar cada usuario individualmente usando su username como clave
-    localStorage.setItem(user.username, JSON.stringify(user));
-    Swal.fire(
-      {
-        title: "Éxito",
-        text: "Registro exitoso",
-        color: "#716add",
-        backdrop: `
-        rgba(0,0,123,0.4)
-        left top
-        no-repeat
-      `,
-        icon: "success"
-      });
+    const users = this.users;
+    if (users.some(user => user.email === email)) {
+      console.warn(`Intento de registro con email existente: ${email}`);
+      alert('Este correo electrónico ya está registrado');
+      return false;
+    }
+
+    const newUser = { username, email, password };
+    this.users = [...users, newUser];
+    console.log('Nuevo usuario registrado:', newUser);
+    console.log('Todos los usuarios actualizados:', this.users);
+    alert('Registro exitoso! Redirigiendo...');
+    this.router.navigate(['/log-in']);
     return true;
   }
 
-  private isUserLogged(): boolean {
-    return !!sessionStorage.getItem('userLogged');
+  logIn(credentials: Pick<User, 'email' | 'password'>): boolean {
+    const { email, password } = credentials;
+    if (!email || !password) {
+      console.warn('Validación fallida: Campos vacíos en login');
+      alert('Por favor, complete todos los campos');
+      return false;
+    }
+
+    const user = this.users.find(user => user.email === email);
+    console.log('Usuario encontrado:', user);
+
+    if (!user) {
+      console.warn(`Intento de login con email no registrado: ${email}`);
+      alert('Usuario no encontrado');
+      return false;
+    }
+
+    if (user.password !== password) {
+      console.warn('Contraseña incorrecta para:', email);
+      alert('Contraseña incorrecta');
+      return false;
+    }
+
+    this.currentUser = user;
+    console.log('Sesión iniciada - Usuario actual:', user);
+    console.log('LocalStorage actualizado:', localStorage);
+    alert('Inicio de sesión exitoso!');
+    this.router.navigate(['/home']);
+    return true;
   }
 
-  login(email: string, password: string): User | null {
-    const users: User[] = [];
-  
-    // Buscar todos los usuarios guardados en localStorage
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key) continue;
-  
-      const item = localStorage.getItem(key);
-      if (!item) continue;
-  
-      try {
-        const user: User = JSON.parse(item);
-        if (user && user.email === email) {
-          if (user.password === password) {
-            return user;
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: "Contraseña incorrecta",
-              icon: "error",
-              color: "#716add",
-              backdrop: `rgba(0,0,123,0.4) left top no-repeat`
-            });
-            return null;
-          }
-        }
-      } catch (error) {
-        console.error('Error leyendo usuario:', error);
-      }
-    }
-  
-    Swal.fire({
-      title: "Error",
-      text: "Usuario no encontrado",
-      icon: "error",
-      color: "#716add",
-      backdrop: `rgba(0,0,123,0.4) left top no-repeat`
-    });
-  
-    return null;
-  }  
+  isAuthenticated(): boolean {
+    return !!this.currentUser;
+  }
+
+  logOut(): void {
+    localStorage.removeItem('currentUser');
+    this.currentUser = null;
+    this.router.navigate(['/log-in']);
+    console.log("Sesión cerrada");
+  }
 }

@@ -1,1 +1,26 @@
-<p>playlist works!</p>
+<div class="container">
+  <app-nav></app-nav>
+  
+  <main class="playlist-main">
+      <button id="createPlaylistButton" class="create-playlist-button">Crear Playlist</button>
+
+      <div id="createPlaylistModal" class="modal">
+          <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Crear Nueva Playlist</h2>
+              <input type="text" id="playlistNameInput" placeholder="Nombre de la Playlist">
+              <div id="playlistSongsSelection">
+              </div>
+              <button id="saveNewPlaylist">Guardar Playlist</button>
+          </div>
+      </div>
+
+      <h1 class="playlist-title">Playlists de Usuarios</h1>
+      <div class="playlist-grid" id="userPlaylists">
+      </div>
+      <h1 class="playlist-title">Playlists Automáticas</h1>
+      <div class="playlist-grid" id="genrePlaylists">
+      </div>
+
+  </main>
+</div>

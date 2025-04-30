@@ -87,23 +87,24 @@ nav .nav-shortcuts {
     left: 110%;
 }
 
-.nav-shortcuts a[href="home.html"]::after {
+
+.nav-shortcuts a.link-home::after {
     content: "Home";
 }
 
-.nav-shortcuts a[href="profile.html"]::after {
+.nav-shortcuts a.link-profile::after {
     content: "Profile";
 }
 
-.nav-shortcuts a[href="playlist.html"]::after {
+.nav-shortcuts a.link-playlist::after {
     content: "Playlists";
 }
 
-.nav-shortcuts a[href="songs.html"]::after {
+.nav-shortcuts a.link-songs::after {
     content: "Songs";
 }
 
-.nav-shortcuts a[href="authors.html"]::after {
+.nav-shortcuts a.link-authors::after {
     content: "Authors";
 }
 
@@ -111,23 +112,36 @@ nav .nav-shortcuts {
     content: "Logout";
 }
 
-nav .filter {
-    padding-left: 5px;
-    border-left: 1px solid var(--cyber-lavender);
-    color: var(--hologram);
-    width: 60%;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    font-size: 1.1rem;
-    box-shadow: 0 0 20px rgba(90, 24, 154, 0.3);
-    backdrop-filter: blur(6px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 1rem auto;
-    border-radius: 0.5rem;
+
+@media (max-width: 1024px) {
+    nav{
+      width: 23%;
+    }
 }
 
-nav .filter:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 30px var(--quantum-glow);
+@media (max-width: 768px) {
+    nav {
+      position: relative;
+      height: auto;
+      width: 97%;
+      flex-direction: row;
+      justify-content: space-around;
+      border-right: 0px solid var(--galaxy-core);
+      box-shadow: 0px 0 0px rgba(16, 0, 43, 0.8);
+  
+  
+    }
+    nav .nav-shortcuts {
+      flex-direction: row;
+      width: auto;
+    }
+}
+  
+@media (max-width: 480px) {
+
+
+    nav img {
+        width: 30px;
+        height: 30px;
+    }
 }
