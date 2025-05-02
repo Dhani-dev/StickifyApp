@@ -1,11 +1,13 @@
 // profile.component.ts
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Song } from '../../shared/interfaces/song.interface';
 import { SongRatings } from '../../shared/interfaces/song-ratings.interface';
 import { Comment } from '../../shared/interfaces/comment.interface';
+import { MusicService } from '../../services/music.service'; // Importa el servicio
+import { Subscription } from 'rxjs';
 
 interface UserProfile {
   username?: string | null;
@@ -38,22 +40,36 @@ interface UserComment {
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
+  private musicService = inject(MusicService); // Inyecta el servicio
   currentUser: UserProfile = {};
-  savedPlaylists: SavedPlaylist[] = []; // Use this to hold the loaded playlists
+  savedPlaylists: SavedPlaylist[] = [];
   userRatings: UserRating[] = [];
   userComments: UserComment[] = [];
   allSongs: Song[] = [];
   private storedUserRatings: { [trackId: number]: SongRatings } = {};
   private storedSongComments: { [trackId: number]: Comment[] } = {};
+  private songsSubscription: Subscription | undefined;
 
   constructor() { }
 
   ngOnInit(): void {
     this.loadUserData();
-    this.loadSavedPlaylists(); // Load user-specific saved playlists
+    this.loadSavedPlaylists();
     this.loadRatingsAndComments();
+    this.subscribeToSongs(); // Suscríbete al observable de canciones
+  }
+
+  ngOnDestroy(): void {
+    this.songsSubscription?.unsubscribe(); // Desuscríbete para evitar fugas de memoria
+  }
+
+  private subscribeToSongs(): void {
+    this.songsSubscription = this.musicService.songs$.subscribe(songs => {
+      this.allSongs = songs;
+      console.log('All songs loaded in Profile:', this.allSongs);
+    });
   }
 
   private loadUserData(): void {
@@ -67,6 +83,7 @@ export class ProfileComponent implements OnInit {
       const savedPlaylistsKey = `savedPlaylists_${userId}`;
       const storedPlaylistsString = localStorage.getItem(savedPlaylistsKey);
       this.savedPlaylists = storedPlaylistsString ? JSON.parse(storedPlaylistsString) : [];
+      console.log('Saved playlists loaded:', this.savedPlaylists);
     } else {
       this.savedPlaylists = [];
     }
@@ -88,6 +105,7 @@ export class ProfileComponent implements OnInit {
     const storedAllSongs = localStorage.getItem('allSongs');
     if (storedAllSongs) {
       this.allSongs = JSON.parse(storedAllSongs);
+      console.log('All songs loaded from localStorage:', this.allSongs);
     }
   }
 
@@ -136,9 +154,16 @@ export class ProfileComponent implements OnInit {
 
   getPlaylistCoverForProfile(playlist: { trackIds: string[] }): string {
     if (this.allSongs.length > 0 && playlist.trackIds.length > 0) {
-      const firstSong = this.allSongs.find(song => song.trackId.toString() === playlist.trackIds[0]);
-      return firstSong?.artworkUrl100 || './assets/default-cover.jpg';
+      const firstSong = this.allSongs.find(song => String(song.trackId) === playlist.trackIds[0]);
+      if (firstSong?.artworkUrl100) {
+        return firstSong.artworkUrl100;
+      } else {
+      }
     }
-    return './assets/default-cover.jpg';
+    return '/banner.jpg';
+  }
+
+  logout(): void {
+    this.authService.logOut();
   }
 }

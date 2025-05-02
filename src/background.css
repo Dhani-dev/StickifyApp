@@ -18,9 +18,8 @@
 
 body {
   background: var(--void);
-  border-bottom: 3px solid var(--galaxy-core);
-  box-shadow: 0 4px 20px rgba(16, 0, 43, 0.6);
   color: var(--text-primary);
   font-family: var(--font-primary);
   line-height: 1.7;
 }
+

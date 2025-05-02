@@ -1,4 +1,3 @@
-// sign-in.component.ts
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -24,13 +23,21 @@ export class SignInComponent {
   });
 
   async onRegistry(): Promise<void> {
-    if (this.registryForm.invalid) return;
+    if (this.registryForm.invalid) {
+      await Swal.fire({
+        title: "Error",
+        text: "Por favor complete todos los campos correctamente",
+        icon: "error",
+        color: "#716add",
+        backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+      });
+      return;
+    }
 
     const { username, email, password, repeatPassword } = this.registryForm.getRawValue();
 
-    // Validación de contraseñas en el componente
     if (password !== repeatPassword) {
-      Swal.fire({
+      await Swal.fire({
         title: "Error",
         text: "Las contraseñas no coinciden",
         icon: "error",
@@ -40,7 +47,6 @@ export class SignInComponent {
       return;
     }
 
-    // Llamada al servicio
     const success = this.authService.signUp({ username, email, password });
     
     if (success) {
@@ -51,7 +57,26 @@ export class SignInComponent {
         color: "#716add",
         backdrop: `rgba(0,0,123,0.4) left top no-repeat`
       });
-      this.router.navigate(['/login']);
+      this.router.navigate(['/log-in']);
+    } else {
+      const users = this.authService.users;
+      if (users.some(user => user.email === email)) {
+        await Swal.fire({
+          title: "Error",
+          text: "Este correo electrónico ya está registrado",
+          icon: "error",
+          color: "#716add",
+          backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+        });
+      } else {
+        await Swal.fire({
+          title: "Error",
+          text: "Error en el registro. Por favor intente nuevamente.",
+          icon: "error",
+          color: "#716add",
+          backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+        });
+      }
     }
   }
 }

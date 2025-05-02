@@ -3,60 +3,32 @@
   <app-header (searchInputChanged)="onSearchTermChanged($event)"></app-header>
 
   <main>
-    <div id="pagination">
-      <button
-        *ngFor="let pageNumber of totalPagesArray"
-        class="page-button"
-        [class.active]="pageNumber === currentPage"
-        (click)="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </button>
-    </div>
+    <app-pagination
+      [totalItems]="totalFilteredSongs"
+      [itemsPerPage]="itemsPerPage"
+      (pageChanged)="onPageChange($event)"
+    ></app-pagination>
 
     <div id="musicResults">
-      <div *ngFor="let song of getPaginatedSongs()" class="song-container" (click)="openModal(song)" style="cursor: pointer;">
-        <div class="song-details">
-          <div class="img-container">
-            <img [src]="song.artworkUrl100" [alt]="song.trackName" [attr.data-trackid]="song.trackId" />
-          </div>
-          <div class="song-info">
-            <h3>{{ song.artistName }}</h3>
-            <p><strong>Canción</strong> {{ song.trackName }}</p>
-            <p><strong>Género</strong> {{ song.primaryGenreName }}</p>
-            <p><strong>Álbum</strong> {{ song.collectionName }}</p>
-            <p *ngIf="song.releaseDate">
-              <strong>Lanzamiento</strong>
-              {{ song.releaseDate | date: 'yyyy-MM-dd' }}
-            </p>
-            <div class="rating-stars" *ngIf="getAverageRatingForSong(song.trackId) > 0">
-              <span *ngFor="let star of getStarArray(getAverageRatingForSong(song.trackId))">{{ star }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      @for (song of getPaginatedSongs(); track song.trackId) {
+        <app-song-card
+          [song]="song"
+          [averageRating]="getAverageRatingForSong(song.trackId)"
+          (songSelected)="openModal($event)"
+        ></app-song-card>
+      }
     </div>
   </main>
 
-  <app-aside [topRatedSongs]="topRatedSongsList"></app-aside>
+  <app-aside></app-aside>
 
-
-  <div #songModal id="songModal" class="modal">
-    <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <div id="modalSongDetails">
-        </div>
-      <div class="rating-comments-section">
-        <h3>Valoraciones y Comentarios</h3>
-        <div id="modalRatings">
-          </div>
-        <div id="modalComments">
-          </div>
-        <div class="comment-input">
-          <input type="text" id="newComment" placeholder="Escribe tu comentario..." [(ngModel)]="newCommentText">
-          <button id="submitComment" (click)="submitComment()">Enviar</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-song-modal
+    *ngIf="showModal"
+    [song]="selectedSong"
+    [currentUser]="currentUser"
+    [comments]="getCommentsForSelectedSong()"
+    (closeModal)="closeModal()"
+    (rateSong)="onRateSong($event)"
+    (submitComment)="onSubmitComment($event)"
+  ></app-song-modal>
 </div>

@@ -1,22 +1,5 @@
-aside {
-  background: linear-gradient(
-    270deg,
-    var(--void) 0%,
-    var(--deep-space) 100%
-);
-  border-left: 3px solid var(--galaxy-core);
-  grid-area: aside;
-  padding: 2rem;
-}
-
 aside  {
-  position: sticky;
-  border-left: 2px solid var(--galaxy-core);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 10px 0 10px 0 rgba(90, 24, 154, 0.4);
-  width: 280px;
+  width: 240px;
 }
 
 aside h2 {

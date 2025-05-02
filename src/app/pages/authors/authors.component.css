@@ -2,16 +2,21 @@
   display: grid;
   grid-template-columns: 1fr 5fr;
   grid-template-rows: auto 1fr;
-  grid-template-areas: 
-      "nav main";
-  height: 100vh;
+  grid-template-areas:
+    "nav main";
+  height: 100vh; /* Asegura que el contenedor ocupe toda la altura de la ventana */
   gap: 5px;
-  background: var(--deep-space);
   margin-top: -30px;
   margin-right: -10px;
   margin-bottom: -30px;
+  margin-left: -17px;
+
 }
 
+main{
+  background: var(--deep-space);
+
+}
 .author-results {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -58,48 +63,27 @@
 }
 
 @media (max-width: 768px) {
-  body {
+  .container {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas: 
-        "header"
-        "nav"
-        "main";
-  }
-  nav {
-    background: var(--void);
-    border: 1px solid var(--cyber-lavender);
-    position: relative;
-    height: auto;
-    width: 97%;
-    flex-direction: row;
-    justify-content: space-around;
-  }
-  nav .nav-shortcuts {
-    flex-direction: row;
-    width: auto;
+    grid-template-rows: auto 1fr; /* Ajustamos las filas para que main ocupe el espacio restante */
+    grid-template-areas:
+      "nav"
+      "main";
+    min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura */
   }
   .author-results {
     padding: 1rem;
   }
-}
 
-.user-panel {
-  background: linear-gradient(45deg, rgba(36, 0, 70, 0.8), rgba(92, 24, 154, 0.5));
-  padding: 1.5rem;
-  border-radius: 15px;
-  margin: 1rem;
-  border: 1px solid var(--cyber-lavender);
-  backdrop-filter: blur(5px);
+  main {
+    grid-area: main;
+    /* No necesitamos un min-height específico aquí, ya que el contenedor lo fuerza */
+  }
 }
 
 @media (max-width: 480px) {
   main {
     padding: 10px;
-  }
-  nav img {
-    width: 30px;
-    height: 30px;
   }
   .author-item {
     margin: 0.5rem;

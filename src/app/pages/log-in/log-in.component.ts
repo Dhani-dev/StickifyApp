@@ -1,13 +1,12 @@
-// log-in.component.ts
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router,RouterLink  } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-log-in',
-  imports: [ReactiveFormsModule,RouterLink ],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.css'
 })
@@ -22,7 +21,16 @@ export class LogInComponent {
   });
 
   async onLogin(): Promise<void> {
-    if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) {
+      await Swal.fire({
+        title: "Error",
+        text: "Por favor complete todos los campos correctamente",
+        icon: "error",
+        color: "#716add",
+        backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+      });
+      return;
+    }
 
     const credentials = {
       email: this.loginForm.value.email!,
@@ -40,6 +48,25 @@ export class LogInComponent {
         backdrop: `rgba(0,0,123,0.4) left top no-repeat`
       });
       this.router.navigate(['/home']);
+    } else {
+      const user = this.authService.users.find(u => u.email === credentials.email);
+      if (!user) {
+        await Swal.fire({
+          title: "Error",
+          text: "Usuario no encontrado",
+          icon: "error",
+          color: "#716add",
+          backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+        });
+      } else {
+        await Swal.fire({
+          title: "Error",
+          text: "Contraseña incorrecta",
+          icon: "error",
+          color: "#716add",
+          backdrop: `rgba(0,0,123,0.4) left top no-repeat`
+        });
+      }
     }
   }
 }

@@ -72,7 +72,7 @@
         <a [routerLink]="['/home']" class="btn home-btn">
           <i class="fa-solid fa-house"></i> Volver al Inicio
         </a>
-        <button id="logoutBtn" [routerLink]="['/']" class="btn logout-btn">
+        <button id="logoutBtn" (click)="logout()" class="btn logout-btn">
           <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
         </button>
       </div>

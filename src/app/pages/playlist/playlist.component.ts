@@ -68,15 +68,19 @@ export class PlaylistComponent implements OnInit {
 
   getPlaylistCover(playlist: Playlist): string {
     const firstSong = this.getPlaylistSongs(playlist)[0];
-    if (!firstSong) return './assets/default-cover.jpg';
-
-    // Forzar tamaño 100x100 para imágenes de iTunes
-    if (firstSong.artworkUrl100?.includes('mzstatic.com')) {
-      return firstSong.artworkUrl100.replace(/100x100bb.jpg$/, '100x100bb.jpg');
+  
+    // Si no hay primera canción, devolvemos la imagen por defecto
+    if (!firstSong) {
+      return '/banner.jpg';
     }
-
-    // Para imágenes subidas por usuarios (asumiendo que son URLs)
-    return `${firstSong.artworkUrl100}?width=100&height=100`;
+  
+    // Si hay artworkUrl100, lo usamos directamente. Asumimos que ya tiene el tamaño adecuado
+    if (firstSong.artworkUrl100) {
+      return firstSong.artworkUrl100;
+    }
+  
+    // Si no hay artworkUrl100, devolvemos la imagen por defecto
+    return '/banner.jpg';
   }
 
   savePlaylistToProfile(playlist: Playlist) {

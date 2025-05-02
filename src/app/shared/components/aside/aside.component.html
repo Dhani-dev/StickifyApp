@@ -1,17 +1,24 @@
 <aside>
-    <h2>Canciones mejor calificadas</h2>
-    <ol id="topRatedList">
-      <li *ngFor="let ratedSong of topRatedSongs">
+  <h2>Canciones mejor calificadas</h2>
+  <ol id="topRatedList">
+    @for (ratedSong of topRatedSongs; track ratedSong.song.trackId) {
+      <li>
         <img [src]="ratedSong.song.artworkUrl100" [alt]="ratedSong.song.trackName">
         <div>
           <span class="artist-track">{{ ratedSong.song.artistName }} - {{ ratedSong.song.trackName }}</span>
-          <span class="rating" *ngIf="ratedSong.averageRating > 0">
-            <span *ngFor="let star of getStarArray(ratedSong.averageRating)">{{ star }}</span>
-          </span>
-          <span class="rating" *ngIf="!(ratedSong.averageRating > 0)">
-            Sin calificaciones
-          </span>
+          @if (ratedSong.averageRating > 0) {
+            <span class="rating">
+              @for (star of getStarArray(ratedSong.averageRating); track $index) {
+                <span>{{ star }}</span>
+              }
+            </span>
+          } @else {
+            <span class="rating">Sin calificaciones</span>
+          }
         </div>
       </li>
-    </ol>
-  </aside>
+    } @empty {
+      <li>No hay canciones calificadas aún</li>
+    }
+  </ol>
+</aside>

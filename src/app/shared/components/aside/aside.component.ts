@@ -1,33 +1,54 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Song } from '../../../shared/interfaces/song.interface';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
-
-interface RatedSong {
-  song: Song;
-  averageRating: number;
-}
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RatingService } from '../../../services/rating.service';
+import { Subscription } from 'rxjs';
+import { RatedSong } from '../../../shared/interfaces/rated-song.interface';
 
 @Component({
   selector: 'app-aside',
-  imports: [CommonModule], // Añade CommonModule al array de imports
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './aside.component.html',
-  styleUrl: './aside.component.css'
+  styleUrls: ['./aside.component.css']
 })
-export class AsideComponent implements OnInit {
-  @Input() topRatedSongs: RatedSong[] = [];
+export class AsideComponent implements OnInit, OnDestroy {
+  topRatedSongs: RatedSong[] = [];
+  private topRatedSubscription: Subscription | null = null;
+
+  constructor(private ratingService: RatingService) {}
 
   ngOnInit(): void {
-    console.log('Top Rated Songs recibidas en Aside:', this.topRatedSongs);
+    this.subscribeToTopRatedSongs();
+  }
+
+  ngOnDestroy(): void {
+    this.topRatedSubscription?.unsubscribe();
+  }
+
+  private subscribeToTopRatedSongs(): void {
+    this.topRatedSubscription = this.ratingService.topRatedSongs$.subscribe(ratedSongs => {
+      this.topRatedSongs = ratedSongs;
+    });
   }
 
   getStarArray(averageRating: number): string[] {
     const fullStars = Math.floor(averageRating);
-    const hasHalfStar = averageRating % 1 !== 0;
+    const hasHalfStar = averageRating - fullStars >= 0.5;
     const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    return [
-      ...Array(fullStars).fill('★'),
-      ...(hasHalfStar ? ['½'] : []), // Puedes usar '½' o un icono de media estrella
-      ...Array(emptyStars).fill('☆'), // Puedes usar '☆' o un icono de estrella vacía
-    ];
+    const stars: string[] = [];
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push('★');
+    }
+
+    if (hasHalfStar) {
+      stars.push('½');
+    }
+
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push('☆');
+    }
+
+    return stars;
   }
 }

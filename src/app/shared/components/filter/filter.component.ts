@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { MusicService } from '../../../services/music.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -19,8 +19,9 @@ export class FilterComponent implements OnInit, OnDestroy {
   selectedYear: string = '';
   private genresSubscription: Subscription | undefined;
   private artistsSubscription: Subscription | undefined;
+  private activeFilter: string | null = null;
 
-  constructor(private musicService: MusicService) {}
+  constructor(private musicService: MusicService, private el: ElementRef) {}
 
   ngOnInit(): void {
     this.genresSubscription = this.musicService.genres$.subscribe((updatedGenres: string[]) => {
@@ -43,7 +44,27 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   toggleFilter(type: string) {
     const filters = document.getElementById(`${type}Filters`);
-    if (filters) filters.classList.toggle('show');
+    if (filters) {
+      filters.classList.toggle('show');
+      this.activeFilter = filters.classList.contains('show') ? type : null;
+    } else {
+      this.activeFilter = null;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.activeFilter) {
+      const filterElement = document.getElementById(`${this.activeFilter}Filters`);
+      const toggleButton = document.getElementById(`${this.activeFilter}Toggle`);
+
+      if (filterElement && toggleButton &&
+          !filterElement.contains(event.target as Node) &&
+          !toggleButton.contains(event.target as Node)) {
+        filterElement.classList.remove('show');
+        this.activeFilter = null;
+      }
+    }
   }
 
   onGenreChange(genre: string, event: any) {

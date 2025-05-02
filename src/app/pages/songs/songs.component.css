@@ -2,13 +2,23 @@
   display: grid;
   grid-template-columns: 1fr 5fr;
   grid-template-rows: auto 1fr;
-  grid-template-areas: 
-      "nav main";
+  grid-template-areas:
+    "nav main";
   gap: 5px;
   background: var(--deep-space);
   margin-top: -30px;
   margin-right: -10px;
   margin-bottom: -30px;
+  margin-left: -17px;
+}
+
+main {
+  grid-area: main;
+  display: flex; /* Añadimos flexbox para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  padding: 2rem; /* Añadimos un poco de padding al main */
+  min-height: calc(100vh - 60px); /* Asegura que main ocupe al menos la altura de la ventana menos los márgenes */
 }
 
 .upload-form {
@@ -16,7 +26,7 @@
   padding: 2rem;
   border-radius: 15px;
   max-width: 500px;
-  margin: 2rem auto;
+  width: 90%; /* Aseguramos que no sea demasiado ancho en pantallas pequeñas */
   border: 2px solid var(--cyber-lavender);
   box-shadow: 0 8px 25px rgba(92, 24, 154, 0.3);
 }
@@ -24,7 +34,7 @@
 .upload-form input,
 .upload-form button {
   display: block;
-  width: 100%;
+  width: calc(100% - 0px); /* Ajustamos el ancho para que quepan dentro del padding */
   margin: 1rem 0;
   padding: 0.8rem;
   border: 2px solid var(--cyber-lavender);
@@ -32,6 +42,7 @@
   background: var(--deep-space);
   color: var(--text-primary);
   transition: all 0.3s ease;
+  box-sizing: border-box; /* Asegura que padding y border no aumenten el ancho total */
 }
 
 .upload-form input:focus {
@@ -57,26 +68,39 @@
 }
 
 @media (max-width: 768px) {
-  body {
+  .container  {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas: 
-        "header"
+    grid-template-rows: auto 1fr auto; /* Ajustamos las filas para main */
+    grid-template-areas:
         "nav"
-        "main";
+        "main"
+        "."; /* Evita un área extra abajo */
+    min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura */
   }
-  nav {
-    position: relative;
-    height: auto;
-    width: 97%;
-    flex-direction: row;
-    justify-content: space-around;
-    background: var(--void);
-    border: 1px solid var(--cyber-lavender);
+
+  app-nav{
+    grid-area: nav;
+    margin-top: 20px;
+    margin-left: -17px;
   }
-  nav .nav-shortcuts {
-    flex-direction: row;
-    width: auto;
+
+  main {
+    padding: 1rem; /* Ajustamos el padding para pantallas más pequeñas */
+    min-height: auto; /* Permitimos que main se ajuste al contenido */
+    align-items: flex-start; /* Alineamos el formulario al inicio en pantallas pequeñas */
+  }
+
+  .upload-form {
+    margin: 2rem auto; /* Centramos el formulario en pantallas pequeñas también */
+    width: 95%; /* Ocupa más ancho en pantallas pequeñas */
+  }
+
+  .upload-form input,
+  .upload-form button {
+    width: calc(100% - 0px); /* Ajustamos el ancho para pantallas pequeñas también */
+    padding: 0.6rem; /* Reducimos el padding para que quepan */
+    margin: 0.8rem 0; /* Reducimos el margen */
+    font-size: 0.9rem; /* Reducimos un poco la fuente si es necesario */
   }
 }
 
@@ -99,5 +123,11 @@
   .upload-form {
     margin: 1rem;
     padding: 1.5rem;
+  }
+
+  .upload-form input,
+  .upload-form button {
+    padding: 0.5rem; /* Reducimos aún más el padding en pantallas muy pequeñas */
+    font-size: 0.85rem; /* Reducimos aún más la fuente si es necesario */
   }
 }

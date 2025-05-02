@@ -3,7 +3,7 @@
 
   <main class="playlist-main">
     <button (click)="openModal()" class="create-playlist-button">
-      <span class="plus">+</span> Crear Playlist
+      <span class="plus"></span> Crear Playlist
     </button>
 
     <!-- Modal -->
@@ -41,13 +41,11 @@
     </div>
 
     <!-- Playlists de Usuario -->
-    <h1 class="playlist-title">Tus Playlists</h1>
+    <h1 class="playlist-title">Playlists creadas por usuarios</h1>
     <div class="playlist-grid">
       <div *ngFor="let playlist of userPlaylists" class="playlist-card">
         <div class="playlist-header">
           <img [src]="getPlaylistCover(playlist)" class="playlist-cover">
-          <div class="playlist-header">
-            <img [src]="getPlaylistCover(playlist)" class="playlist-cover">
             <div class="playlist-info">
               <h3>{{ playlist.name }}</h3>
               <p>{{ getPlaylistSongs(playlist).length }} canciones</p>
@@ -55,7 +53,6 @@
               <button class="save-playlist-profile" (click)="savePlaylistToProfile(playlist)">
                 <i class="fas fa-save"></i> Guardar
               </button>
-            </div>
           </div>
         </div>
         <div class="playlist-tracks-container">
@@ -75,7 +72,7 @@
     </div>
 
     <!-- Playlists Automáticas -->
-    <h1 class="playlist-title">Playlists Automáticas</h1>
+    <h1 class="playlist-title">Playlists Automáticas Por Géneros</h1>
     <div class="playlist-grid">
       <div *ngFor="let playlist of autoPlaylists" class="playlist-card">
         <div class="playlist-header">

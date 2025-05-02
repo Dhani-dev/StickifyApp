@@ -21,7 +21,7 @@ export class MusicService {
     this.loadUploadedSongs();
   }
 
-  private loadInitialSongs(searchTerm: string = 'music', limit: number = 200): void {
+  private loadInitialSongs(searchTerm: string = 'music', limit: number = 100): void {
     this.http.get<{ results: any[] }>(
       `${this.apiUrl}/search?term=${encodeURIComponent(searchTerm)}&limit=${limit}`
     ).pipe(

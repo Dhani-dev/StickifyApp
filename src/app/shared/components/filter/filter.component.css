@@ -1,32 +1,3 @@
-#allFiltersContainer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.8rem;
-}
-
-.filter {
-  padding-left: 5px;
-  border-left: 1px solid var(--cyber-lavender);
-  color: var(--hologram);
-  width: 60%;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  font-size: 1.1rem;
-  box-shadow: 0 0 20px rgba(90, 24, 154, 0.3);
-  backdrop-filter: blur(6px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 1rem auto;
-  border-radius: 0.5rem;
-}
-
-.filter:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 30px var(--quantum-glow);
-}
-
 #genreToggle,
 #dateToggle,
 #artistToggle {
@@ -64,18 +35,26 @@
   box-shadow: 0 0 30px rgba(16, 0, 43, 0.6);
   padding: 1.5rem;
   display: none;
-  z-index: 10;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Aumentamos el z-index */
   width: 200px;
   max-height: 300px;
   overflow-y: auto;
+  left: 0;
+  margin-top: 5px; /* Pequeño espacio entre botón y menú */
 }
+
 
 #genreFilters.show,
 #dateFilters.show,
 #artistFilters.show {
   display: block;
+}
+
+.filter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .checkbox-container,
@@ -179,22 +158,4 @@
 #artistFilters::-webkit-scrollbar-thumb {
   background: var(--cyber-lavender);
   border-radius: 4px;
-}
-
-@media (max-width: 768px) {
-
-  #genreFilters,
-  #dateFilters,
-  #artistFilters {
-      transform: translateX(-100%);
-
-  }
-}
-
-
-@media (max-width: 480px) {
-  #genreFilters, #dateFilters, #artistFilters{
-    transform: translateX(-100%);
-
-  }
 }

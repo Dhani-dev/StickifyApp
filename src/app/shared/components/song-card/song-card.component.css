@@ -1,0 +1,123 @@
+/* song-card.component.css - Versión mejorada con ajuste de texto */
+.song-container {
+    background: var(--void);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--cyber-lavender);
+    border-radius: 10px;
+    padding: 15px;
+    height: 100%; /* Asegura altura consistente */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .song-container:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon-purple);
+    box-shadow: 0 8px 25px rgba(92, 24, 154, 0.3);
+  }
+  
+  .img-container {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--cyber-lavender);
+    margin: 0 auto 15px;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* Evita que se reduzca */
+  }
+  
+  .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cambiado de 'fill' a 'cover' para mejor aspecto */
+    transition: transform 0.3s ease;
+  }
+  
+  .song-info:hover img {
+    transform: scale(1.05);
+  }
+  
+  .song-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%,
+                var(--quantum-glow) 0%,
+                transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .song-container:hover::after {
+    opacity: 0.15;
+  }
+  
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color: var(--text-primary);
+    min-width: 0;
+    flex-grow: 1; /* Ocupa espacio disponible */
+    text-align: center; /* Centrado consistente */
+  }
+  
+  .song-info h3 {
+    font-family: var(--font-primary);
+    color: var(--hologram);
+    font-size: 1.2rem; /* Reducido ligeramente */
+    margin: 0;
+    text-shadow: var(--text-glow);
+    /* Nuevas propiedades para el ajuste de texto */
+    white-space: normal; /* Permite que el texto se ajuste */
+    overflow-wrap: break-word; /* Rompe palabras largas si es necesario */
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos al final si aún desborda */
+  }
+  
+  .song-info p {
+    font-size: 0.9rem; /* Ajustado para consistencia */
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    /* Nuevas propiedades para el ajuste de texto */
+    white-space: normal; /* Permite que el texto se ajuste */
+    overflow-wrap: break-word; /* Rompe palabras largas si es necesario */
+    overflow: hidden; /* Oculta el desbordamiento */
+    text-overflow: ellipsis; /* Muestra puntos suspensivos al final si aún desborda */
+  }
+  
+  .song-info strong {
+    color: var(--cyber-lavender);
+    font-weight: 500;
+  }
+  
+  .rating-stars {
+    display: inline-flex;
+    gap: 0.25rem;
+    color: var(--quantum-glow);
+    font-size: 1.2rem; /* Reducido ligeramente */
+    margin-top: 0.3rem;
+    justify-content: center;
+    flex-shrink: 0; /* Evita que afecte altura */
+  }
+  
+  .rating-stars span {
+    color: var(--quantum-glow);
+    text-shadow: 0 0 8px rgba(199, 125, 255, 0.4);
+    transition: transform 0.2s ease;
+  }
+  
+  .rating-stars span:hover {
+    transform: scale(1.2);
+    color: var(--text-secondary);
+  }

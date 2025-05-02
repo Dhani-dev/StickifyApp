@@ -1,11 +1,24 @@
+body {
+  font-family: var(--font-primary), sans-serif;
+  background: var(--night-sky);
+  color: var(--text-primary);
+  margin: 0; /* Resetear márgenes del body */
+  padding: 20px; /* Añadir un poco de padding general si deseas */
+  min-height: 100vh; /* Asegurar que el body ocupe al menos el 100% de la altura de la ventana */
+  display: flex; /* Usar flexbox para centrar el contenido */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+}
+
 .profile-container {
   max-width: 800px;
-  margin: 0 auto;
+  width: 95%; /* Ajustar el ancho para que no sea demasiado grande en pantallas pequeñas */
   background: var(--void);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(92, 24, 154, 0.3);
   overflow: hidden;
   border: 1px solid var(--cyber-lavender);
+  margin: 20px 0; /* Añadir un poco de margen superior e inferior */
 }
 
 .profile-header {
@@ -143,6 +156,7 @@ pre {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  margin-top: 1rem;
 }
 
 .playlist-cover-sm {
@@ -174,26 +188,34 @@ pre {
   font-size: 0.9rem;
 }
 
+.playlist-type {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.playlist-date {
+  font-size: 0.8rem;
+}
+
 @media (max-width: 768px) {
   .profile-container {
-      margin: 1rem;
+    margin: 1rem;
   }
 
   .data-row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .data-row label {
-      width: auto;
+    width: auto;
   }
 
   .profile-actions {
-      flex-direction: column;
+    flex-direction: column;
   }
 }
-
 
 .playlist-grid {
   display: grid;

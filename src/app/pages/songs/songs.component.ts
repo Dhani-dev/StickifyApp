@@ -1,4 +1,3 @@
-// songs.component.ts
 import { Component, ViewChild, ElementRef, inject } from '@angular/core';
 import { NavComponent } from '../../shared/components/nav/nav.component';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +5,7 @@ import { MusicService } from '../../services/music.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Song } from '../../shared/interfaces/song.interface';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-songs',
@@ -23,42 +23,178 @@ export class SongsComponent {
 
   private musicService = inject(MusicService);
   private router = inject(Router);
+  private currentSwal: any;
+  private readonly MAX_IMAGE_SIZE_MB = 3; // Límite de 3MB
 
   async uploadSong(): Promise<void> {
-    const artistName = this.artistNameInput.nativeElement.value.trim();
-    const trackName = this.trackNameInput.nativeElement.value.trim();
-    const collectionName = this.collectionNameInput.nativeElement.value.trim();
-    const primaryGenreName = this.primaryGenreNameInput.nativeElement.value.trim();
-    const artworkFile: File = this.artworkFileInput.nativeElement.files[0];
-
-    if (!artistName || !trackName || !collectionName || !primaryGenreName || !artworkFile) {
-      alert('Por favor, completa todos los campos y selecciona un archivo de imagen.');
+    // 1. Validación inicial de campos
+    const formData = this.getFormData();
+    if (!formData.valid) {
+      await this.showAlert('error', 'Error', formData.errorMessage!);
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const artworkUrl = reader.result as string;
+    // Validar tamaño de imagen (nueva validación)
+    if (formData.artworkFile!.size > this.MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+      await this.showAlert(
+        'error', 
+        'Archivo demasiado grande', 
+        `La imagen no debe exceder ${this.MAX_IMAGE_SIZE_MB}MB`
+      );
+      return;
+    }
 
-      const newSong: Song = {
-        artistName: artistName,
-        trackName: trackName,
-        collectionName: collectionName,
-        primaryGenreName: primaryGenreName,
-        artworkUrl100: artworkUrl,
-        releaseDate: new Date().toISOString(),
-        trackId: Date.now(),
-        collectionId: Date.now() + 1,
-        artistId: Date.now() + 2,
-        isUserUpload: true
-      };
+    // 2. Mostrar loader
+    await this.showLoader();
 
-      this.musicService.addSong(newSong); // Usar el método del servicio para agregar la canción
+    try {
+      // 3. Procesar imagen
+      const artworkUrl = await this.processImage(formData.artworkFile!);
+      
+      // 4. Crear objeto canción
+      const song = this.createSong(
+        formData.artistName!,
+        formData.trackName!,
+        formData.collectionName!,
+        formData.primaryGenreName!,
+        artworkUrl
+      );
 
-      alert(`La canción "${trackName}" de ${artistName} ha sido subida con éxito.`);
+      // 5. Guardar canción
+      this.musicService.addSong(song);
+
+      // 6. Mostrar éxito
+      await this.showAlert(
+        'success', 
+        'Éxito', 
+        `Canción "${formData.trackName}" subida correctamente`
+      );
+      
+      // 7. Redirigir
       this.router.navigate(['/home']);
-    };
 
-    reader.readAsDataURL(artworkFile);
+    } catch (error) {
+      console.error('Error en uploadSong:', error);
+      
+      // 8. Mostrar error específico
+      const errorMsg = this.getErrorMessage(error);
+      await this.showAlert('error', 'Error', errorMsg);
+      
+    } finally {
+      // 9. Asegurar que se cierre cualquier alerta previa
+      this.closeCurrentAlert();
+    }
+  }
+
+  private getFormData(): {
+    valid: boolean;
+    errorMessage?: string;
+    artistName?: string;
+    trackName?: string;
+    collectionName?: string;
+    primaryGenreName?: string;
+    artworkFile?: File
+  } {
+    const artistName = this.artistNameInput?.nativeElement?.value?.trim();
+    const trackName = this.trackNameInput?.nativeElement?.value?.trim();
+    const collectionName = this.collectionNameInput?.nativeElement?.value?.trim();
+    const primaryGenreName = this.primaryGenreNameInput?.nativeElement?.value?.trim();
+    const artworkFile = this.artworkFileInput?.nativeElement?.files?.[0];
+
+    if (!artistName || !trackName || !collectionName || !primaryGenreName) {
+      return {
+        valid: false,
+        errorMessage: 'Por favor completa todos los campos'
+      };
+    }
+
+    if (!artworkFile) {
+      return {
+        valid: false,
+        errorMessage: 'Por favor selecciona una imagen'
+      };
+    }
+
+    return {
+      valid: true,
+      artistName,
+      trackName,
+      collectionName,
+      primaryGenreName,
+      artworkFile
+    };
+  }
+
+  private async processImage(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(new Error('Error procesando imagen'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private createSong(
+    artistName: string,
+    trackName: string,
+    collectionName: string,
+    primaryGenreName: string,
+    artworkUrl: string
+  ): Song {
+    return {
+      artistName,
+      trackName,
+      collectionName,
+      primaryGenreName,
+      artworkUrl100: artworkUrl,
+      releaseDate: new Date().toISOString(),
+      trackId: Date.now(),
+      collectionId: Date.now() + 1,
+      artistId: Date.now() + 2,
+      isUserUpload: true
+    };
+  }
+
+  private async showLoader(): Promise<void> {
+    this.closeCurrentAlert();
+    this.currentSwal = Swal.fire({
+      title: 'Subiendo canción...',
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+      background: '#1a1a1a',
+      color: '#ffffff'
+    });
+  }
+
+  private async showAlert(
+    type: 'success'|'error'|'info'|'warning',
+    title: string,
+    text: string
+  ): Promise<void> {
+    this.closeCurrentAlert();
+    this.currentSwal = await Swal.fire({
+      icon: type,
+      title: title,
+      text: text,
+      background: '#1a1a1a',
+      color: '#ffffff',
+      confirmButtonText: 'Entendido',
+      timer: type === 'success' ? 3000 : undefined,
+      timerProgressBar: type === 'success'
+    });
+  }
+
+  private closeCurrentAlert(): void {
+    if (this.currentSwal) {
+      Swal.close();
+      this.currentSwal = null;
+    }
+  }
+
+  private getErrorMessage(error: any): string {
+    if (error instanceof Error && error.message.includes('procesando imagen')) {
+      return 'Error al procesar la imagen. Intenta con otro archivo.';
+    }
+    return 'Ocurrió un error inesperado al subir la canción.';
   }
 }

@@ -18,7 +18,7 @@ export class AuthService {
     this.currentUser = localStorage.getItem('currentUser') 
       ? JSON.parse(localStorage.getItem('currentUser')!) 
       : null;
-   }
+  }
 
   get users(): User[] {
     const usersString = localStorage.getItem(this.USERS_KEY);
@@ -46,23 +46,18 @@ export class AuthService {
     const { username, email, password } = userData;
     if (!username || !email || !password) {
       console.warn('Validación fallida: Campos vacíos');
-      alert('Por favor, complete todos los campos');
       return false;
     }
 
     const users = this.users;
     if (users.some(user => user.email === email)) {
       console.warn(`Intento de registro con email existente: ${email}`);
-      alert('Este correo electrónico ya está registrado');
       return false;
     }
 
     const newUser = { username, email, password };
     this.users = [...users, newUser];
     console.log('Nuevo usuario registrado:', newUser);
-    console.log('Todos los usuarios actualizados:', this.users);
-    alert('Registro exitoso! Redirigiendo...');
-    this.router.navigate(['/log-in']);
     return true;
   }
 
@@ -70,7 +65,6 @@ export class AuthService {
     const { email, password } = credentials;
     if (!email || !password) {
       console.warn('Validación fallida: Campos vacíos en login');
-      alert('Por favor, complete todos los campos');
       return false;
     }
 
@@ -79,21 +73,16 @@ export class AuthService {
 
     if (!user) {
       console.warn(`Intento de login con email no registrado: ${email}`);
-      alert('Usuario no encontrado');
       return false;
     }
 
     if (user.password !== password) {
       console.warn('Contraseña incorrecta para:', email);
-      alert('Contraseña incorrecta');
       return false;
     }
 
     this.currentUser = user;
     console.log('Sesión iniciada - Usuario actual:', user);
-    console.log('LocalStorage actualizado:', localStorage);
-    alert('Inicio de sesión exitoso!');
-    this.router.navigate(['/home']);
     return true;
   }
 
