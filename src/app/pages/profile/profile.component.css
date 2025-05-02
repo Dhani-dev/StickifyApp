@@ -2,23 +2,23 @@ body {
   font-family: var(--font-primary), sans-serif;
   background: var(--night-sky);
   color: var(--text-primary);
-  margin: 0; /* Resetear márgenes del body */
-  padding: 20px; /* Añadir un poco de padding general si deseas */
-  min-height: 100vh; /* Asegurar que el body ocupe al menos el 100% de la altura de la ventana */
-  display: flex; /* Usar flexbox para centrar el contenido */
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profile-container {
   max-width: 800px;
-  width: 95%; /* Ajustar el ancho para que no sea demasiado grande en pantallas pequeñas */
+  width: 95%;
   background: var(--void);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(92, 24, 154, 0.3);
   overflow: hidden;
   border: 1px solid var(--cyber-lavender);
-  margin: 20px 0; /* Añadir un poco de margen superior e inferior */
+  margin: 20px 0;
 }
 
 .profile-header {

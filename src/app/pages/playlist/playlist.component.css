@@ -10,7 +10,7 @@
 
 .playlist-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Modificado para máximo 2 por fila */
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   gap: 1.5rem;
   padding: 1rem;
 }
@@ -19,8 +19,8 @@
   background: var(--deep-space);
   border-radius: 15px;
   width: 90%;
-  margin: 0.5rem; /* Reducimos el margen */
-  padding: 1rem; /* Reducimos el padding */
+  margin: 0.5rem;
+  padding: 1rem;
   box-shadow: 0 4px 12px rgba(92, 24, 154, 0.3);
   transition: transform 0.3s ease;
   border: 1px solid var(--cyber-lavender);
@@ -32,15 +32,15 @@
 
 .playlist-header {
   display: flex;
-  gap: 1rem; /* Reducimos el gap en el header */
-  margin-bottom: 0.8rem; /* Reducimos el margen inferior */
+  gap: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .playlist-cover {
-  width: 100px; /* Reducimos el ancho de la portada */
-  height: 100px; /* Reducimos la altura de la portada */
-  border-radius: 8px; /* Ajustamos el radio del borde */
-  border: 2px solid var(--cyber-lavender); /* Reducimos el ancho del borde */
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  border: 2px solid var(--cyber-lavender);
   background: linear-gradient(45deg, var(--deep-space), var(--void));
   position: relative;
   overflow: hidden;
@@ -99,6 +99,11 @@ h1{
   border-bottom: 1px solid rgba(157, 78, 221, 0.2);
 }
 
+.track:first-child {
+  padding-left: 0.6rem;
+}
+
+
 .track:last-child {
   border-bottom: none;
 }
@@ -154,7 +159,7 @@ h1{
 }
 
 .playlist-name-input {
-  width: calc(100% - 2rem); /* Ajustamos el ancho considerando el padding */
+  width: calc(100% - 2rem);
   padding: 1rem;
   background: var(--deep-space);
   border: 2px solid var(--cyber-lavender);
@@ -162,7 +167,7 @@ h1{
   color: var(--text-primary);
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  margin-bottom: 1rem; /* Añadimos un margen inferior */
+  margin-bottom: 1rem;
 }
 
 .playlist-name-input:focus {
@@ -264,36 +269,37 @@ h1{
   padding: 2rem;
   border: 2px solid var(--cyber-lavender);
   width: 90%;
-  max-width: 900px; /* Reducimos el max-width para mejor visualización */
+  max-width: 900px;
   border-radius: 1.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Reducimos un poco el gap */
+  gap: 1.5rem;
   box-shadow: 0 0 40px rgba(157, 78, 221, 0.2);
   max-height: 90vh;
-  overflow: auto; /* Añadimos overflow para el contenido largo */
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .songs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajustamos el ancho mínimo de las tarjetas de canción */
-  gap: 1rem; /* Reducimos el gap entre las canciones */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
   width: 100%;
   padding: 1rem 0;
-  max-height: 40vh; /* Reducimos la altura máxima para que no ocupe toda la pantalla */
+  max-height: 40vh;
   overflow-y: auto;
 }
 
 .song-card {
   background: var(--deep-space);
   border: 1px solid var(--cyber-lavender);
-  border-radius: 10px; /* Reducimos el radio para que quepan mejor */
-  padding: 1rem; /* Reducimos el padding */
+  border-radius: 10px;
+  padding: 1rem;
   display: flex;
-  flex-direction: column; /* Cambiamos a columna para mejor distribución en espacios pequeños */
-  align-items: center; /* Centramos los elementos */
-  gap: 0.5rem; /* Reducimos el gap */
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
@@ -311,28 +317,28 @@ h1{
 }
 
 .song-thumbnail {
-  width: 80px; /* Reducimos el tamaño del thumbnail */
+  width: 80px;
   height: 80px;
   border-radius: 8px;
   border: 2px solid var(--quantum-glow);
-  margin-bottom: 0.5rem; /* Añadimos margen inferior */
+  margin-bottom: 0.5rem;
 }
 
 .song-info {
-  text-align: center; /* Centramos el texto de la canción */
-  color: var(--hologram); /* Texto principal con color llamativo */
-  text-shadow: 0 0 5px rgba(157, 78, 221, 0.5); /* Añadimos un brillo sutil */
+  text-align: center;
+  color: var(--hologram);
+  text-shadow: 0 0 5px rgba(157, 78, 221, 0.5);
 }
 
 .song-title {
   font-size: 0.9rem;
-  color: var(--quantum-glow); /* Título con otro color vibrante */
-  text-shadow: 0 0 3px rgba(92, 24, 154, 0.5); /* Un brillo más suave */
+  color: var(--quantum-glow);
+  text-shadow: 0 0 3px rgba(92, 24, 154, 0.5);
 }
 
 .song-artist {
   font-size: 0.8rem;
-  color: var(--cyber-lavender); /* Artista con otro color distintivo */
+  color: var(--cyber-lavender);
 }
 
 .close {
@@ -393,43 +399,40 @@ h1{
   height: 20px;
   margin-left: auto;
   flex-shrink: 0;
-  appearance: none; /* Elimina el estilo por defecto */
+  appearance: none;
   -webkit-appearance: none;
   cursor: pointer;
-  border: 2px solid rgba(157, 78, 221, 0.3); /* Borde morado claro (30% opacidad) */
+  border: 2px solid rgba(157, 78, 221, 0.3);
   border-radius: 4px;
-  background-color: transparent; /* Sin fondo */
+  background-color: transparent;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Cuando está seleccionado */
 .song-checkbox:checked {
-  background-color: var(--quantum-glow); /* Morado brillante */
-  border-color: var(--quantum-glow); /* Borde del mismo color */
+  background-color: var(--quantum-glow);
+  border-color: var(--quantum-glow);
 }
 
-/* Checkmark (✓) cuando está seleccionado */
 .song-checkbox:checked::before {
   content: "✓";
-  color: var(--deep-space); /* Color del check (oscuro para contraste) */
+  color: var(--deep-space);
   font-size: 14px;
   font-weight: bold;
 }
 
-/* Efecto hover (sin seleccionar) */
 .song-checkbox:hover {
-  border-color: var(--cyber-lavender); /* Morado un poco más fuerte */
+  border-color: var(--cyber-lavender);
 }
 
-/* Efecto hover (seleccionado) */
 .song-checkbox:checked:hover {
-  background-color: var(--neon-purple); /* Cambia a morado más intenso */
+  background-color: var(--neon-purple);
   border-color: var(--neon-purple);
-  box-shadow: 0 0 8px rgba(157, 78, 221, 0.5); /* Brillo suave */
+  box-shadow: 0 0 8px rgba(157, 78, 221, 0.5);
 }
+
 .save-playlist {
   background: var(--electric-violet);
   color: var(--text-primary);
@@ -439,11 +442,11 @@ h1{
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center; /* Centramos el botón */
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  width: fit-content; /* Ajustamos el ancho al contenido */
-  margin: 0 auto; /* Centramos el botón */
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .save-playlist:hover {
@@ -506,4 +509,3 @@ h1{
     padding: 0.8rem;
   }
 }
-

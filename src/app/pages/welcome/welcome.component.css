@@ -1,75 +1,10 @@
-header {
-    background: var(--void);
-    padding: 1.5rem 2rem;
-    border-bottom: 3px solid var(--galaxy-core);
-    box-shadow: 0 4px 20px rgba(16, 0, 43, 0.6);
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.button {
-    padding: 0.8rem 1.8rem;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(135deg, var(--neon-purple) 0%, var(--electric-violet) 100%);
-    border: 1px solid var(--cyber-lavender);
-    color: var(--text-primary);
-    box-shadow: 0 4px 20px rgba(90, 24, 154, 0.4);
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-
-.button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(123, 44, 191, 0.6);
-    background: linear-gradient(135deg, var(--electric-violet) 0%, var(--neon-purple) 100%);
-}
-
-.button.large {
-    padding: 1.2rem 2.5rem;
-    font-size: 1.1rem;
-}
-
-.top-right-buttons {
-    display: grid;
-    gap: 1.2rem;
-    grid-template-columns: repeat(3, 1fr);
-
-}
-
-header a {
-    text-decoration: none;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--hologram);
-    font-size: 2.2rem;
-    font-weight: 700;
-    text-shadow: var(--text-glow);
-    letter-spacing: -0.5px;
-}
-
-.logo-img {
-    width: 100px;
-    height: auto;
-    max-height: 100px;
-    filter: drop-shadow(0 0 15px var(--quantum-glow));
-
-}
-
 main.hero {
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 50px 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .hero .hero-content {
@@ -82,8 +17,8 @@ main.hero {
     inset: 0;
     background: radial-gradient(circle at 50% 50%, rgba(199, 125, 255, 0.1) 0%, transparent 60%);
     z-index: 0;
+    opacity: 0.8;
 }
-
 
 .hero .hero-content h1 {
     color: var(--hologram);
@@ -98,11 +33,19 @@ main.hero {
     font-size: 1.1rem;
     max-width: 600px;
     margin-bottom: 2rem;
-
 }
 
 .hero .hero-content a.button.primary.large {
     text-decoration: none;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    z-index: 2;
+    position: relative; 
+    color: var(--hologram);
+}
+
+.hero .hero-content a.button.primary.large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(90, 24, 154, 0.6);
 }
 
 .hero .hero-image img {
@@ -113,6 +56,14 @@ main.hero {
     border: 2px solid var(--cyber-lavender);
     box-shadow: 0 0 30px rgba(90, 24, 154, 0.3);
     transform: perspective(1000px) rotateY(5deg);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    filter: brightness(100%);
+}
+
+.hero .hero-image img:hover {
+    transform: perspective(1000px) rotateY(5deg) scale(1.03);
+    box-shadow: 0 0 40px rgba(90, 24, 154, 0.5);
+    filter: brightness(110%);
 }
 
 section.features {
@@ -163,7 +114,6 @@ section.testimonials {
     padding: 4rem 2rem;
 }
 
-
 .testimonial {
     background: rgba(36, 0, 70, 0.8);
     padding: 2rem;
@@ -171,7 +121,6 @@ section.testimonials {
     border-left: 4px solid var(--neon-purple);
     margin-bottom: 2rem;
 }
-
 
 .testimonial p {
     color: var(--text-secondary);
@@ -191,22 +140,8 @@ section.details {
     max-width: 300px;
 }
 
-footer {
-    background: var(--void);
-    padding: 2rem;
-    text-align: center;
-    border-top: 3px solid var(--galaxy-core);
-    margin-top: 4rem;
-}
-
-footer p {
-    color: var(--cyber-lavender);
-    font-size: 0.9rem;
-}
-
 @media (max-width: 768px) {
-
-    header {
+    app-welcome-header {
         height: 12rem;
     }
 
@@ -218,7 +153,6 @@ footer p {
     .top-right-buttons {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-
     }
 
     main.hero,

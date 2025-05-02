@@ -1,4 +1,3 @@
-// home.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { MusicService } from '../../services/music.service';
 import { Song } from '../../shared/interfaces/song.interface';
@@ -12,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { SongModalComponent } from '../../shared/components/song-modal/song-modal.component';
 import { SongCardComponent } from '../../shared/components/song-card/song-card.component';
 import { RatingService } from '../../services/rating.service';
-import { PaginationComponent } from '../../shared/components/pagination/pagination.component'; // Importa el nuevo componente
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +25,7 @@ import { PaginationComponent } from '../../shared/components/pagination/paginati
     FormsModule,
     SongModalComponent,
     SongCardComponent,
-    PaginationComponent // Agrega PaginationComponent a los imports
+    PaginationComponent
   ],
   styleUrls: ['./home.component.css']
 })
@@ -39,10 +38,9 @@ export class HomeComponent implements OnInit {
   songComments: { [trackId: number]: Comment[] } = {};
   currentUser: string | null = null;
 
-  // Pagination
   currentPage: number = 1;
   itemsPerPage: number = 20;
-  totalFilteredSongs: number = 0; // Nueva propiedad para el total de canciones filtradas
+  totalFilteredSongs: number = 0;
 
   constructor(
     private musicService: MusicService,
@@ -56,12 +54,13 @@ export class HomeComponent implements OnInit {
     this.loadComments();
   }
 
+  // Load initial data from MusicService
   private loadInitialData(): void {
-    this.musicService.songs$.subscribe({ // Suscribirse directamente al observable songs$
+    this.musicService.songs$.subscribe({
       next: (songs) => {
         this.allSongs = songs;
         this.filteredSongs = [...this.allSongs];
-        this.totalFilteredSongs = this.filteredSongs.length;
+        this.totalFilteredSongs = this.filteredSongs.length; // Set total count
         this.ratingService.updateTopRatedSongs(this.allSongs);
       },
       error: (err) => console.error('Error loading songs:', err)
@@ -83,6 +82,7 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('songComments', JSON.stringify(this.songComments));
   }
 
+  // Handle filter changes
   onFilterChange(filters: any): void {
     let filtered = this.allSongs.filter(song => {
       const yearMatch = !filters.year ||
@@ -96,8 +96,8 @@ export class HomeComponent implements OnInit {
     });
 
     this.filteredSongs = filtered;
-    this.currentPage = 1; // Resetear la página al filtrar
-    this.totalFilteredSongs = this.filteredSongs.length; // Actualizar el total
+    this.currentPage = 1;  // Reset to first page on filter change
+    this.totalFilteredSongs = this.filteredSongs.length;
   }
 
   onSearchTermChanged(searchTerm: string): void {
@@ -106,8 +106,8 @@ export class HomeComponent implements OnInit {
       song.trackName.toLowerCase().includes(lowerSearchTerm) ||
       song.artistName.toLowerCase().includes(lowerSearchTerm)
     );
-    this.currentPage = 1; // Resetear la página al buscar
-    this.totalFilteredSongs = this.filteredSongs.length; // Actualizar el total
+    this.currentPage = 1;
+    this.totalFilteredSongs = this.filteredSongs.length;
   }
 
   getAverageRatingForSong(trackId: number): number {
@@ -123,21 +123,21 @@ export class HomeComponent implements OnInit {
     this.selectedSong = null;
     this.showModal = false;
   }
-
+  // Handle song rating
   onRateSong(rating: number): void {
     if (this.selectedSong && this.currentUser) {
       const currentRatings = {...this.ratingService.currentRatings};
-
+      // If there are no ratings for this song yet, initialize an empty object
       if (!currentRatings[this.selectedSong.trackId]) {
         currentRatings[this.selectedSong.trackId] = {};
       }
-
+      // Store the user's rating for the song
       currentRatings[this.selectedSong.trackId][this.currentUser] = rating;
       this.ratingService.saveRatings(currentRatings);
       this.ratingService.updateTopRatedSongs(this.allSongs);
     }
   }
-
+  // Handle comment submission
   onSubmitComment(commentText: string): void {
     if (this.selectedSong && commentText.trim() && this.currentUser) {
       const newComment: Comment = {
@@ -151,7 +151,7 @@ export class HomeComponent implements OnInit {
       }
 
       this.songComments[this.selectedSong.trackId].push(newComment);
-      this.saveComments();
+      this.saveComments(); // Persist comments to localStorage
     }
   }
 
@@ -160,14 +160,12 @@ export class HomeComponent implements OnInit {
       this.songComments[this.selectedSong.trackId] || [] : [];
   }
 
-  // Nueva función para obtener las canciones paginadas usando la currentPage actual
   getPaginatedSongs(): Song[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.filteredSongs.slice(startIndex, endIndex);
   }
 
-  // Nueva función para manejar el evento de cambio de página del componente de paginación
   onPageChange(newPage: number): void {
     this.currentPage = newPage;
   }

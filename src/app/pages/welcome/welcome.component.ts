@@ -1,10 +1,12 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { WelcomeHeaderComponent } from '../../shared/components/welcome-header/welcome-header.component';
+import { WelcomeFooterComponent } from '../../shared/components/welcome-footer/welcome-footer.component';
 
 @Component({
   selector: 'app-welcome',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterLink, WelcomeHeaderComponent, WelcomeFooterComponent],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })

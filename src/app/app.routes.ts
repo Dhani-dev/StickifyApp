@@ -6,7 +6,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { authGuard } from './shared/guards/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { PlaylistComponent } from './pages/playlist/playlist.component';
-import { SongsComponent } from './pages/songs/songs.component';
+import { UploadComponent } from './pages/upload/upload.component';
 import { AuthorsComponent } from './pages/authors/authors.component';
 
 export const routes: Routes = [
@@ -40,8 +40,8 @@ export const routes: Routes = [
 
     },
     {
-        path: 'songs',
-        component: SongsComponent,
+        path: 'upload',
+        component: UploadComponent,
         canActivate: [authGuard]
 
     },

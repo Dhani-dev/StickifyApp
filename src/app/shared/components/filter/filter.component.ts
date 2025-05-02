@@ -41,7 +41,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.artistsSubscription.unsubscribe();
     }
   }
-
+  
   toggleFilter(type: string) {
     const filters = document.getElementById(`${type}Filters`);
     if (filters) {
@@ -51,7 +51,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.activeFilter = null;
     }
   }
-
+  // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (this.activeFilter) {

@@ -16,12 +16,13 @@ export class AuthorsComponent implements OnInit, OnDestroy {
   private artistsSubscription: Subscription | undefined;
   private musicService = inject(MusicService);
 
+  // Initialize component by subscribing to artists data
   ngOnInit(): void {
     this.artistsSubscription = this.musicService.artists$.subscribe(artists => {
       this.authors = [...artists];
     });
   }
-
+  // Clean up 
   ngOnDestroy(): void {
     if (this.artistsSubscription) {
       this.artistsSubscription.unsubscribe();

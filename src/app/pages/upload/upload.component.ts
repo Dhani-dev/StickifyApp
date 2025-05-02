@@ -8,13 +8,13 @@ import { Song } from '../../shared/interfaces/song.interface';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-songs',
+  selector: 'app-upload',
   standalone: true,
   imports: [NavComponent, FormsModule, CommonModule],
-  templateUrl: './songs.component.html',
-  styleUrl: './songs.component.css'
+  templateUrl: './upload.component.html',
+  styleUrl: './upload.component.css'
 })
-export class SongsComponent {
+export class UploadComponent {
   @ViewChild('artistName') artistNameInput!: ElementRef;
   @ViewChild('trackName') trackNameInput!: ElementRef;
   @ViewChild('collectionName') collectionNameInput!: ElementRef;
@@ -24,17 +24,15 @@ export class SongsComponent {
   private musicService = inject(MusicService);
   private router = inject(Router);
   private currentSwal: any;
-  private readonly MAX_IMAGE_SIZE_MB = 3; // Límite de 3MB
+  private readonly MAX_IMAGE_SIZE_MB = 3;
 
   async uploadSong(): Promise<void> {
-    // 1. Validación inicial de campos
     const formData = this.getFormData();
     if (!formData.valid) {
       await this.showAlert('error', 'Error', formData.errorMessage!);
       return;
     }
-
-    // Validar tamaño de imagen (nueva validación)
+    // Check image size limit
     if (formData.artworkFile!.size > this.MAX_IMAGE_SIZE_MB * 1024 * 1024) {
       await this.showAlert(
         'error', 
@@ -44,14 +42,12 @@ export class SongsComponent {
       return;
     }
 
-    // 2. Mostrar loader
     await this.showLoader();
 
     try {
-      // 3. Procesar imagen
+      // Process image and create song
       const artworkUrl = await this.processImage(formData.artworkFile!);
       
-      // 4. Crear objeto canción
       const song = this.createSong(
         formData.artistName!,
         formData.trackName!,
@@ -60,28 +56,23 @@ export class SongsComponent {
         artworkUrl
       );
 
-      // 5. Guardar canción
       this.musicService.addSong(song);
 
-      // 6. Mostrar éxito
       await this.showAlert(
         'success', 
         'Éxito', 
         `Canción "${formData.trackName}" subida correctamente`
       );
       
-      // 7. Redirigir
       this.router.navigate(['/home']);
 
     } catch (error) {
       console.error('Error en uploadSong:', error);
       
-      // 8. Mostrar error específico
       const errorMsg = this.getErrorMessage(error);
       await this.showAlert('error', 'Error', errorMsg);
       
     } finally {
-      // 9. Asegurar que se cierre cualquier alerta previa
       this.closeCurrentAlert();
     }
   }
@@ -124,7 +115,7 @@ export class SongsComponent {
       artworkFile
     };
   }
-
+  // Convert image file to data URL
   private async processImage(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

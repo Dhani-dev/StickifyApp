@@ -23,10 +23,11 @@ export class SongModalComponent implements OnInit, OnChanges {
   @Output() rateSong = new EventEmitter<number>();
   @Output() submitComment = new EventEmitter<string>();
 
+  // Internal song state with getter/setter
   @Input()
   set song(value: Song | null) {
     this._song = value;
-    this.updateUserRating(); // Llama a la función cuando cambia la canción
+    this.updateUserRating(); // Update rating when song changes
   }
   get song(): Song | null {
     return this._song;
@@ -38,18 +39,16 @@ export class SongModalComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    // Asegurarse de tener el currentUser al inicializar el componente
     this.currentUser = this.authService.currentUser?.username ||
                         this.authService.currentUser?.email || null;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Volver a actualizar la calificación si cambia el currentUser (aunque no es lo más común)
     if (changes['currentUser'] && this.song) {
       this.updateUserRating();
     }
   }
-
+  // Update rating from service
   private updateUserRating(): void {
     if (this.song && this.currentUser) {
       const ratings = this.ratingService.currentRatings[this.song.trackId];

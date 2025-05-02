@@ -1,13 +1,12 @@
-// playlist.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { NavComponent } from '../../shared/components/nav/nav.component';
 import { MusicService } from '../../services/music.service';
 import { PlaylistService } from '../../services/playlist.service';
 import { Song } from '../../shared/interfaces/song.interface';
 import { Playlist } from '../../shared/interfaces/playlist.interface';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Añade esto
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-playlist',
@@ -49,12 +48,40 @@ export class PlaylistComponent implements OnInit {
   }
 
   createPlaylist() {
-    if (this.newPlaylistName && this.selectedSongs.length > 0) {
-      this.playlistService.createUserPlaylist(this.newPlaylistName, this.selectedSongs);
-      this.loadPlaylists();
-      this.closeModal();
+    if (!this.newPlaylistName || this.newPlaylistName.trim() === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Nombre Requerido',
+        text: 'Por favor, ingresa un nombre para la playlist.',
+        confirmButtonText: 'Entendido'
+      });
+      return;
     }
+
+    if (this.selectedSongs.length === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: '¡Selecciona Canciones!',
+        text: 'Por favor, selecciona al menos una canción para la playlist.',
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
+
+    const newPlaylist = this.playlistService.createUserPlaylist(this.newPlaylistName, this.selectedSongs);
+    this.loadPlaylists();
+    this.closeModal();
+
+    this.savePlaylistToProfile(newPlaylist);
+
+    Swal.fire({
+      icon: 'success',
+      title: '¡Playlist Creada y Guardada!',
+      text: `La playlist "${this.newPlaylistName}" ha sido creada y guardada en tu perfil.`,
+      confirmButtonText: '¡Genial!'
+    });
   }
+
 
   openModal() {
     this.showModal = true;
@@ -68,18 +95,15 @@ export class PlaylistComponent implements OnInit {
 
   getPlaylistCover(playlist: Playlist): string {
     const firstSong = this.getPlaylistSongs(playlist)[0];
-  
-    // Si no hay primera canción, devolvemos la imagen por defecto
+
     if (!firstSong) {
       return '/banner.jpg';
     }
-  
-    // Si hay artworkUrl100, lo usamos directamente. Asumimos que ya tiene el tamaño adecuado
+
     if (firstSong.artworkUrl100) {
       return firstSong.artworkUrl100;
     }
-  
-    // Si no hay artworkUrl100, devolvemos la imagen por defecto
+
     return '/banner.jpg';
   }
 
@@ -96,27 +120,47 @@ export class PlaylistComponent implements OnInit {
           type: playlist.type,
           createdAt: playlist.createdAt
         };
-  
+
         const savedPlaylistsKey = `savedPlaylists_${userId}`;
         const storedPlaylistsString = localStorage.getItem(savedPlaylistsKey);
         const storedPlaylists = storedPlaylistsString ? JSON.parse(storedPlaylistsString) : [];
-  
+
         const existingPlaylistIndex = storedPlaylists.findIndex(
           (saved: { id: string }) => saved.id === playlistToSave.id
         );
-  
+
         if (existingPlaylistIndex === -1) {
           storedPlaylists.push(playlistToSave);
           localStorage.setItem(savedPlaylistsKey, JSON.stringify(storedPlaylists));
-          alert(`Playlist "${playlist.name}" guardada en tu perfil.`);
+          Swal.fire({
+            icon: 'success',
+            title: '¡Playlist Guardada!',
+            text: `La playlist "${playlist.name}" se ha guardado en tu perfil.`,
+            confirmButtonText: '¡Entendido!'
+          });
         } else {
-          alert(`La playlist "${playlist.name}" ya está guardada en tu perfil.`);
+          Swal.fire({
+            icon: 'info',
+            title: '¡Playlist Existente!',
+            text: `La playlist "${playlist.name}" ya está guardada en tu perfil.`,
+            confirmButtonText: 'Entendido'
+          });
         }
       } else {
-        alert('No se pudo identificar al usuario para guardar la playlist.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de Usuario',
+          text: 'No se pudo identificar al usuario para guardar la playlist.',
+          confirmButtonText: 'Entendido'
+        });
       }
     } else {
-      alert('No se pudo guardar la playlist. Usuario no encontrado.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudo guardar la playlist. Usuario no encontrado.',
+        confirmButtonText: 'Entendido'
+      });
     }
   }
 }

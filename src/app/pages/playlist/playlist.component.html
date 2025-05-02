@@ -6,7 +6,6 @@
       <span class="plus"></span> Crear Playlist
     </button>
 
-    <!-- Modal -->
     <div *ngIf="showModal" class="modal">
       <div class="modal-content">
         <span class="close" (click)="closeModal()">&times;</span>
@@ -33,14 +32,12 @@
         </div>
 
         <button (click)="createPlaylist()" 
-                class="save-playlist"
-                [disabled]="!newPlaylistName || selectedSongs.length === 0">
+                class="save-playlist">
           Guardar Playlist
         </button>
       </div>
     </div>
 
-    <!-- Playlists de Usuario -->
     <h1 class="playlist-title">Playlists creadas por usuarios</h1>
     <div class="playlist-grid">
       <div *ngFor="let playlist of userPlaylists" class="playlist-card">
@@ -71,7 +68,6 @@
       </div>
     </div>
 
-    <!-- Playlists Automáticas -->
     <h1 class="playlist-title">Playlists Automáticas Por Géneros</h1>
     <div class="playlist-grid">
       <div *ngFor="let playlist of autoPlaylists" class="playlist-card">

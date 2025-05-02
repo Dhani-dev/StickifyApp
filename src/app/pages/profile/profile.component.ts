@@ -1,4 +1,3 @@
-// profile.component.ts
 import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -6,32 +5,12 @@ import { RouterLink } from '@angular/router';
 import { Song } from '../../shared/interfaces/song.interface';
 import { SongRatings } from '../../shared/interfaces/song-ratings.interface';
 import { Comment } from '../../shared/interfaces/comment.interface';
-import { MusicService } from '../../services/music.service'; // Importa el servicio
+import { MusicService } from '../../services/music.service';
 import { Subscription } from 'rxjs';
-
-interface UserProfile {
-  username?: string | null;
-  email?: string | null;
-}
-
-interface SavedPlaylist {
-  id: string;
-  name: string;
-  trackIds: string[];
-  type: 'user' | 'auto';
-  createdAt: Date;
-}
-
-interface UserRating {
-  songName?: string;
-  rating: number;
-}
-
-interface UserComment {
-  songName?: string;
-  text: string;
-  date: number;
-}
+import { Playlist } from '../../shared/interfaces/playlist.interface';
+import { UserProfile } from '../../shared/interfaces/user-profile.interface';
+import { UserRating } from '../../shared/interfaces/user-rating.interface';
+import { UserComment } from '../../shared/interfaces/user-comment.interface';
 
 @Component({
   selector: 'app-profile',
@@ -42,12 +21,14 @@ interface UserComment {
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
-  private musicService = inject(MusicService); // Inyecta el servicio
+  private musicService = inject(MusicService);
   currentUser: UserProfile = {};
-  savedPlaylists: SavedPlaylist[] = [];
+  savedPlaylists: Playlist[] = [];
   userRatings: UserRating[] = [];
   userComments: UserComment[] = [];
   allSongs: Song[] = [];
+
+  // Local storage data cache
   private storedUserRatings: { [trackId: number]: SongRatings } = {};
   private storedSongComments: { [trackId: number]: Comment[] } = {};
   private songsSubscription: Subscription | undefined;
@@ -58,17 +39,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.loadUserData();
     this.loadSavedPlaylists();
     this.loadRatingsAndComments();
-    this.subscribeToSongs(); // Suscríbete al observable de canciones
+    this.subscribeToSongs();
   }
 
   ngOnDestroy(): void {
-    this.songsSubscription?.unsubscribe(); // Desuscríbete para evitar fugas de memoria
+    this.songsSubscription?.unsubscribe();
   }
 
   private subscribeToSongs(): void {
     this.songsSubscription = this.musicService.songs$.subscribe(songs => {
       this.allSongs = songs;
-      console.log('All songs loaded in Profile:', this.allSongs);
     });
   }
 
@@ -83,7 +63,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const savedPlaylistsKey = `savedPlaylists_${userId}`;
       const storedPlaylistsString = localStorage.getItem(savedPlaylistsKey);
       this.savedPlaylists = storedPlaylistsString ? JSON.parse(storedPlaylistsString) : [];
-      console.log('Saved playlists loaded:', this.savedPlaylists);
     } else {
       this.savedPlaylists = [];
     }
@@ -105,7 +84,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     const storedAllSongs = localStorage.getItem('allSongs');
     if (storedAllSongs) {
       this.allSongs = JSON.parse(storedAllSongs);
-      console.log('All songs loaded from localStorage:', this.allSongs);
     }
   }
 
@@ -131,7 +109,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private populateUserComments(): void {
-    if (this.currentUser.email) {
+    if (this.currentUser.email || this.currentUser.username) {
       for (const trackId in this.storedSongComments) {
         if (this.storedSongComments.hasOwnProperty(trackId)) {
           const commentsForTrack = this.storedSongComments[parseInt(trackId, 10)];
@@ -151,13 +129,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }
     }
   }
-
-  getPlaylistCoverForProfile(playlist: { trackIds: string[] }): string {
+  // Get cover image for playlist (first song's artwork or default)
+  getPlaylistCoverForProfile(playlist: Playlist): string {
     if (this.allSongs.length > 0 && playlist.trackIds.length > 0) {
       const firstSong = this.allSongs.find(song => String(song.trackId) === playlist.trackIds[0]);
       if (firstSong?.artworkUrl100) {
         return firstSong.artworkUrl100;
-      } else {
       }
     }
     return '/banner.jpg';

@@ -13,7 +13,7 @@ export class SongCardComponent {
   @Input() song!: Song;
   @Input() averageRating: number = 0;
   @Output() songSelected = new EventEmitter<Song>();
-
+  // Convert numeric rating to visual star representation
   getStarArray(): string[] {
     const fullStars = Math.floor(this.averageRating);
     const hasHalfStar = this.averageRating % 1 !== 0;
@@ -25,7 +25,7 @@ export class SongCardComponent {
     }
 
     if (hasHalfStar) {
-      stars.push('½'); // Usamos el carácter Unicode para media estrella
+      stars.push('½');
     }
 
     for (let i = 0; i < emptyStars; i++) {

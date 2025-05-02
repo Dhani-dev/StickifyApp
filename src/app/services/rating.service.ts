@@ -29,12 +29,12 @@ export class RatingService {
       this.userRatingsSubject.next(ratings);
     }
   }
-
+  
   saveRatings(ratings: {[trackId: number]: SongRatings}): void {
     this.userRatingsSubject.next(ratings);
     localStorage.setItem('songRatings', JSON.stringify(ratings));
   }
-
+  
   getAverageRatingForSong(trackId: number): number {
     const ratings = this.currentRatings[trackId];
     if (ratings) {
@@ -46,7 +46,7 @@ export class RatingService {
     }
     return 0;
   }
-
+  // Update top rated songs list
   updateTopRatedSongs(allSongs: Song[]): void {
     const ratedSongs = Object.keys(this.currentRatings)
       .map(trackIdStr => {
@@ -57,7 +57,7 @@ export class RatingService {
       })
       .filter((ratedSong): ratedSong is RatedSong => ratedSong !== null)
       .sort((a, b) => b.averageRating - a.averageRating)
-      .slice(0, 5);
+      .slice(0, 5); // Get top 5 rated songs
 
     this.topRatedSongsSubject.next(ratedSongs);
   }

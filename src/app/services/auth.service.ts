@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
-interface User {
-  username?: string;
-  email: string;
-  password?: string;
-}
+import Swal from 'sweetalert2';
+import { User } from '../shared/interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  // LocalStorage keys for user data
   private readonly USERS_KEY = 'users';
   private readonly CURRENT_USER_KEY = 'currentUser';
 
   constructor(private router: Router) {
-    this.currentUser = localStorage.getItem('currentUser') 
-      ? JSON.parse(localStorage.getItem('currentUser')!) 
+    this.currentUser = localStorage.getItem('currentUser')
+      ? JSON.parse(localStorage.getItem('currentUser')!)
       : null;
   }
-
+  // Getter/setter for all registered users
   get users(): User[] {
     const usersString = localStorage.getItem(this.USERS_KEY);
     return usersString ? JSON.parse(usersString) : [];
@@ -28,7 +25,7 @@ export class AuthService {
   set users(users: User[]) {
     localStorage.setItem(this.USERS_KEY, JSON.stringify(users));
   }
-
+  // Getter/setter for currently logged in user
   get currentUser(): User | null {
     const currentUserString = localStorage.getItem(this.CURRENT_USER_KEY);
     return currentUserString ? JSON.parse(currentUserString) : null;
@@ -57,7 +54,6 @@ export class AuthService {
 
     const newUser = { username, email, password };
     this.users = [...users, newUser];
-    console.log('Nuevo usuario registrado:', newUser);
     return true;
   }
 
@@ -69,7 +65,6 @@ export class AuthService {
     }
 
     const user = this.users.find(user => user.email === email);
-    console.log('Usuario encontrado:', user);
 
     if (!user) {
       console.warn(`Intento de login con email no registrado: ${email}`);
@@ -82,7 +77,6 @@ export class AuthService {
     }
 
     this.currentUser = user;
-    console.log('Sesión iniciada - Usuario actual:', user);
     return true;
   }
 
@@ -94,6 +88,13 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     this.currentUser = null;
     this.router.navigate(['/log-in']);
-    console.log("Sesión cerrada");
+
+    Swal.fire({
+      icon: 'info',
+      title: 'Sesión cerrada',
+      text: 'Has cerrado sesión correctamente.',
+      confirmButtonText: 'Aceptar'
+    });
+
   }
 }

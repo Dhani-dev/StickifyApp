@@ -24,13 +24,13 @@ export class AsideComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.topRatedSubscription?.unsubscribe();
   }
-
+  // Subscribe to top rated songs updates
   private subscribeToTopRatedSongs(): void {
     this.topRatedSubscription = this.ratingService.topRatedSongs$.subscribe(ratedSongs => {
       this.topRatedSongs = ratedSongs;
     });
   }
-
+  // Convert numeric rating to star display array
   getStarArray(averageRating: number): string[] {
     const fullStars = Math.floor(averageRating);
     const hasHalfStar = averageRating - fullStars >= 0.5;

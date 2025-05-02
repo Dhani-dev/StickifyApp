@@ -8,9 +8,12 @@ import { Song } from '../shared/interfaces/song.interface';
   providedIn: 'root'
 })
 export class MusicService {
+  // API
   private apiUrl = 'https://itunes.apple.com';
   private songsSubject = new BehaviorSubject<Song[]>([]);
   public songs$ = this.songsSubject.asObservable();
+
+  // Genre and artist state
   private allGenresSubject = new BehaviorSubject<string[]>([]);
   public genres$ = this.allGenresSubject.asObservable();
   private allArtistsSubject = new BehaviorSubject<string[]>([]);
@@ -20,7 +23,7 @@ export class MusicService {
     this.loadInitialSongs();
     this.loadUploadedSongs();
   }
-
+  // Load initial songs from iTunes API
   private loadInitialSongs(searchTerm: string = 'music', limit: number = 100): void {
     this.http.get<{ results: any[] }>(
       `${this.apiUrl}/search?term=${encodeURIComponent(searchTerm)}&limit=${limit}`
@@ -32,7 +35,7 @@ export class MusicService {
       this.updateGenresAndArtists(songs);
     });
   }
-
+  // Load user-uploaded songs from localStorage
   private loadUploadedSongs(): void {
     const storedUploadedSongs = localStorage.getItem('uploadedSongs');
     if (storedUploadedSongs) {
@@ -41,7 +44,7 @@ export class MusicService {
       this.updateGenresAndArtists(uploadedSongs);
     }
   }
-
+  // Filter songs based on search term
   fetchSongs(searchTerm: string = ''): Observable<Song[]> {
     if (!searchTerm) {
       return this.songs$;
@@ -56,7 +59,7 @@ export class MusicService {
       )
     );
   }
-
+  // Transform API response to Song objects
   private mapSongs(results: any[], isUserUpload: boolean): Song[] {
     return results.map((song: any) => ({
       trackId: song.trackId || Date.now() + Math.random(),
@@ -71,7 +74,7 @@ export class MusicService {
       artistId: song.artistId || Date.now() + Math.random(),
     } as Song));
   }
-
+  // Update genre and artist lists with new songs
   private updateGenresAndArtists(newSongs: Song[]): void {
     const allGenres = [...new Set([...this.allGenresSubject.getValue(), ...newSongs.map(s => s.primaryGenreName)])].sort();
     this.allGenresSubject.next(allGenres);
@@ -87,7 +90,7 @@ export class MusicService {
   getArtists(): string[] {
     return this.allArtistsSubject.getValue();
   }
-
+  // Add new song (user upload)
   addSong(newSong: Song): void {
     const currentSongs = this.songsSubject.getValue();
     const updatedSongs = [newSong, ...currentSongs];
