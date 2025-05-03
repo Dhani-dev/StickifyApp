@@ -83,7 +83,6 @@ export class UploadComponent {
     const file = input.files?.[0];
     
     if (file) {
-      // Verificar tamaño de la imagen
       if (file.size > this.MAX_IMAGE_SIZE_MB * 1024 * 1024) {
         this.showAlert(
           'error', 

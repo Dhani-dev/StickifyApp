@@ -68,7 +68,7 @@ main {
 }
 
 .file-upload-input {
-  display: none; /* Oculta el input de tipo file */
+  display: none;
 }
 
 .file-upload-label {
@@ -76,9 +76,9 @@ main {
   width: calc(100% - 0px);
   margin: 1rem 0;
   padding: 0.8rem;
-  border: 2px dashed var(--neon-purple); /* Un borde punteado para indicar que es un área de carga */
+  border: 2px dashed var(--neon-purple);
   border-radius: 8px;
-  background: rgba(90, 24, 154, 0.1); /* Un fondo sutil */
+  background: rgba(90, 24, 154, 0.1);
   color: var(--neon-purple);
   text-align: center;
   cursor: pointer;
@@ -95,7 +95,7 @@ main {
 
 .file-upload-label:hover {
   background: rgba(123, 44, 191, 0.2);
-  border-style: solid; /* Cambia el estilo del borde al hacer hover */
+  border-style: solid;
   color: var(--electric-violet);
 }
 
