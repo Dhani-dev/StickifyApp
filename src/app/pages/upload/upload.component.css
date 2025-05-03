@@ -31,7 +31,7 @@ main {
   box-shadow: 0 8px 25px rgba(92, 24, 154, 0.3);
 }
 
-.upload-form input,
+.upload-form input[type="text"],
 .upload-form button {
   display: block;
   width: calc(100% - 0px);
@@ -45,7 +45,7 @@ main {
   box-sizing: border-box;
 }
 
-.upload-form input:focus {
+.upload-form input[type="text"]:focus {
   border-color: var(--neon-purple);
   box-shadow: 0 0 15px rgba(90, 24, 154, 0.3);
 }
@@ -67,6 +67,57 @@ main {
   box-shadow: 0 4px 15px rgba(157, 78, 221, 0.4);
 }
 
+.file-upload-input {
+  display: none; /* Oculta el input de tipo file */
+}
+
+.file-upload-label {
+  display: block;
+  width: calc(100% - 0px);
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border: 2px dashed var(--neon-purple); /* Un borde punteado para indicar que es un área de carga */
+  border-radius: 8px;
+  background: rgba(90, 24, 154, 0.1); /* Un fondo sutil */
+  color: var(--neon-purple);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  height: auto;
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.file-upload-label:hover {
+  background: rgba(123, 44, 191, 0.2);
+  border-style: solid; /* Cambia el estilo del borde al hacer hover */
+  color: var(--electric-violet);
+}
+
+.preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  min-height: 100px;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.file-upload-label:hover .image-preview {
+  opacity: 0.8;
+}
 @media (max-width: 768px) {
   .container  {
     grid-template-columns: 1fr;
@@ -95,21 +146,14 @@ main {
     width: 95%;
   }
 
-  .upload-form input,
-  .upload-form button {
+  .upload-form input[type="text"],
+  .upload-form button,
+  .file-upload-label {
     width: calc(100% - 0px);
     padding: 0.6rem;
     margin: 0.8rem 0;
     font-size: 0.9rem;
   }
-}
-
-.user-panel {
-  background: rgba(157, 78, 221, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem;
-  border: 1px solid var(--cyber-lavender);
 }
 
 @media (max-width: 480px) {
@@ -125,9 +169,18 @@ main {
     padding: 1.5rem;
   }
 
-  .upload-form input,
-  .upload-form button {
+  .upload-form input[type="text"],
+  .upload-form button,
+  .file-upload-label {
     padding: 0.5rem;
     font-size: 0.85rem;
   }
+}
+
+.user-panel {
+  background: rgba(157, 78, 221, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem;
+  border: 1px solid var(--cyber-lavender);
 }

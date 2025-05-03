@@ -25,6 +25,7 @@ export class UploadComponent {
   private router = inject(Router);
   private currentSwal: any;
   private readonly MAX_IMAGE_SIZE_MB = 3;
+  previewImage: string | ArrayBuffer | null = null;
 
   async uploadSong(): Promise<void> {
     const formData = this.getFormData();
@@ -74,6 +75,29 @@ export class UploadComponent {
       
     } finally {
       this.closeCurrentAlert();
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    
+    if (file) {
+      // Verificar tamaño de la imagen
+      if (file.size > this.MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+        this.showAlert(
+          'error', 
+          'Archivo demasiado grande', 
+          `La imagen no debe exceder ${this.MAX_IMAGE_SIZE_MB}MB`
+        );
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewImage = reader.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
